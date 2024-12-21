@@ -8,10 +8,11 @@ module.exports = {
   entry: isDev
     ? ["webpack-hot-middleware/client?reload=true", "./src/client.tsx"]
     : "./src/client.tsx",
+  target: 'web',
   output: {
     path: path.resolve( __dirname, "dist" ),
     filename: "[name].bundle.js",
-    publicPath: "/",
+    publicPath: "/static/",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

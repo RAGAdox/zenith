@@ -5,10 +5,11 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
+    "ci": "yarn install --frozen-lockfile",
     "build:client": "webpack --config webpack.client.config.js",
     "build:server": "webpack --config webpack.server.config.js",
     "build": "npm run build:client && npm run build:server",
-    "dev": "NODE_ENV=development ts-node src/server.ts",
+    "dev": "NODE_ENV=development ts-node src/server.tsx",
     "start": "node dist/server.bundle.js",
     "type-check": "tsc --noEmit"
   },

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import AboutPage from "./pages/about/page";
-import HomePage from "./pages/index/page";
+import React, { Suspense, useEffect, useState } from "react";
+
+const AboutPage = React.lazy(() => import("./pages/about/page"));
+const HomePage = React.lazy(() => import("./pages/index/page"));
 
 const Router = () => {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -17,7 +18,11 @@ const Router = () => {
   }, []);
 
   const Component = currentPath === "/" ? HomePage : AboutPage;
-  return <Component />;
+  return (
+    <Suspense fallback={<div>Loading Component ..</div>}>
+      <Component />
+    </Suspense>
+  );
 };
 
 export default Router;
