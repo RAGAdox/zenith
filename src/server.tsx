@@ -7,6 +7,7 @@ import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import clientConfig from "../webpack.client.config";
 import App from "./app";
+import { parsePathWithoutQuery, parseQueryString } from "./utils";
 
 const server = express();
 
@@ -32,7 +33,9 @@ server.use(
 );
 
 server.get("*", (req, res) => {
-  console.log("Route requested:", req.url);
+  const initialPath = parsePathWithoutQuery(req.url);
+  const initialQuery = parseQueryString(req.url);
+
   const stream = renderToPipeableStream(
     <html>
       <head>
@@ -40,7 +43,7 @@ server.get("*", (req, res) => {
       </head>
       <body>
         <div id="root">
-          <App initialRoute={req.url} />
+          <App initialRoute={initialPath} initialQuery={initialQuery} />
         </div>
       </body>
     </html>,

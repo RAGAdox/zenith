@@ -10,7 +10,9 @@ const Link = ({
   function handleNavigation(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
     const newRoute = event.currentTarget.getAttribute("href");
-    if (newRoute && newRoute !== window.location.pathname) {
+    const currentUrl = new URL(window.location.href);
+
+    if (newRoute && newRoute !== currentUrl.pathname + currentUrl.search) {
       window.history.pushState({}, "", newRoute);
       window.dispatchEvent(new Event("popstate"));
     }
