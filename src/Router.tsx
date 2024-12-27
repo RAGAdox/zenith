@@ -10,11 +10,22 @@ const Router = ({ url = "/" }: RouterProps) => {
   const [props, setProps] = React.useState<any>(null);
 
   async function getComponent(url: string) {
-    const Component =
-      url === "" || url === "/"
-        ? React.lazy(() => import("./pages/Home"))
-        : React.lazy(() => import("./pages/About"));
-    return Component;
+    const Component = React.lazy(
+      () =>
+        import(
+          /* @vite-ignore */ `./pages${
+            url === "" || url === "/" ? "/Home" : url
+          }`
+        )
+    );
+
+    let initProps = await (
+      await import(
+        /* @vite-ignore */ `./pages${url === "" || url === "/" ? "/Home" : url}`
+      )
+    ).getInitialProps();
+    
+    return { Component, initProps };
   }
   useEffect(() => {
     const handlePopState = () => {
@@ -27,8 +38,8 @@ const Router = ({ url = "/" }: RouterProps) => {
 
   useEffect(() => {
     const loadComponent = async (href: string) => {
-      const Component = await getComponent(href);
-
+      const { Component, initProps } = await getComponent(href);
+      setProps(initProps);
       setComponent(Component);
     };
     loadComponent(currentHref);
@@ -37,7 +48,7 @@ const Router = ({ url = "/" }: RouterProps) => {
   if (!Component) {
     return <Loader />;
   }
-  return <Suspense fallback={<Loader />}>{<Component />}</Suspense>;
+  return <Suspense fallback={<Loader />}>{<Component {...props} />}</Suspense>;
 };
 
 export default Router;
