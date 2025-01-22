@@ -1,0 +1,14 @@
+{
+  "name": "zenith",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.22",
+  "workspaces": [
+    "frontend/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "turbo": "^2.3.3"
+  }
+}
