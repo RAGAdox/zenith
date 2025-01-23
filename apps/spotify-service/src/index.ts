@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
-import express, { Request, Response } from "express";
-import serverless from "serverless-http";
+import express, { Request, Response, Router } from "express";
 import { getAccessToken } from "./service/getAccessToken";
 import { getAuthorizationTokenURI } from "./service/getAuthorizationToken";
 import { getCurrentlyPlaying } from "./service/getCurrentlyPlaying";
@@ -9,10 +8,11 @@ import { retriveAccessToken, storeAccessToken } from "./service/token-storage";
 dotenv.config();
 
 const app = express();
-app.get("/", (_req: Request, res: Response) => {
+const router = Router();
+router.get("/", (_req: Request, res: Response) => {
   res.send("Hello TurboRepo");
 });
-app.get("/callback", async (req: Request, res: Response) => {
+router.get("/callback", async (req: Request, res: Response) => {
   const { code } = req.query;
   if (!code) {
     throw new Error("No Code found");
@@ -24,17 +24,17 @@ app.get("/callback", async (req: Request, res: Response) => {
     return;
   }
   await storeAccessToken(token);
-  res.redirect("/song");
+  res.redirect("/api/song");
 });
-app.get("/authorization", async (req, res) => {
+router.get("/authorization", async (req, res) => {
   const redirect_uri = await getAuthorizationTokenURI();
   res.redirect(307, redirect_uri);
 });
 
-app.get("/song", async (req, res) => {
+router.get("/song", async (req, res) => {
   const token = await retriveAccessToken();
   if (!token) {
-    res.redirect(303, "/authorization");
+    res.redirect(303, "/api/authorization");
     return;
   }
   const data = await getCurrentlyPlaying(token.accessToken);
@@ -53,6 +53,7 @@ const startServer = async () => {
     key: readFileSync(path.join(__dirname, "../certs/key.pem")),
     cert: readFileSync(path.join(__dirname, "../certs/cert.pem")),
   };
+  app.use("/api", router);
   const server = Https.createServer(options, app);
   await getMoongooseClient();
   server.listen(3000, () => console.log("Server started on port 3000"));
@@ -61,5 +62,4 @@ if ((process.env.NODE_ENV || "").toLowerCase() === "local") {
   startServer();
 }
 
-export default app;
-export const handler = serverless(app);
+export default router;

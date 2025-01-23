@@ -1,15 +1,15 @@
 [build]
-  ## command = "yarn build"
-  functions = "src/index"
-  ## publish = "dist"
+  command = "yarn build"
+  functions = "netlify/functions"
+  publish = "dist"
 
 [functions]
   external_node_modules = ["express"]
   node_bundler = "esbuild"
 
 [[redirects]]
-  from = "/*"
-  to = "/src/index/:splat"
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
 
