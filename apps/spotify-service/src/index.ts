@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
-
+import serverless from "serverless-http";
 import { getAccessToken } from "./service/getAccessToken";
 import { getAuthorizationTokenURI } from "./service/getAuthorizationToken";
 import { getCurrentlyPlaying } from "./service/getCurrentlyPlaying";
@@ -62,3 +62,4 @@ if ((process.env.NODE_ENV || "").toLowerCase() === "local") {
 }
 
 export default app;
+export const handler = serverless(app);

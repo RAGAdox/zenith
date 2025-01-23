@@ -1,6 +1,6 @@
 [build]
   command = "yarn build"
-  functions = "netlify/functions"
+  functions = "src"
   publish = "dist"
 
 [functions]
@@ -8,8 +8,8 @@
   node_bundler = "esbuild"
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  from = "/*"
+  to = "/src/index/:splat"
   status = 200
   force = true
 
