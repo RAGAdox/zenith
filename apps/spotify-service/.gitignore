@@ -1,3 +1,7 @@
+#build files
 /dist/
-/node_modules/
-/.turbo/
+#Certificates and environment variables
+/certs/
+.env
+.env.*
+!.env.example

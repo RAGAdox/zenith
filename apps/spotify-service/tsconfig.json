@@ -12,9 +12,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "outDir": "dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "types.d.ts",
   ]
 }
