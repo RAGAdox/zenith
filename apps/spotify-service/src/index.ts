@@ -60,3 +60,5 @@ const startServer = async () => {
 if ((process.env.NODE_ENV || "").toLowerCase() === "local") {
   startServer();
 }
+
+export default app;
