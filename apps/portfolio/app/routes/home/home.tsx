@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import type { Route } from "./+types/home";
 
-import { Background } from "@/components/Background";
-import { TopNavigation } from "@/components/TopNavigation";
+import { Background } from "../../components/Background";
+import { TopNavigation } from "../../components/TopNavigation";
 import { HeroSection1 } from "./components/HeroSection1";
 import HeroSection2 from "./components/HeroSection2/HeroSection2";
 import { HeroSection3 } from "./components/HeroSection3";
