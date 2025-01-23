@@ -1,7 +1,7 @@
 [build]
-  command = "yarn build"
-  functions = "src"
-  publish = "dist"
+  ## command = "yarn build"
+  functions = "src/index"
+  ## publish = "dist"
 
 [functions]
   external_node_modules = ["express"]
