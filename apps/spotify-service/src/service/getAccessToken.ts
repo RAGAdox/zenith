@@ -7,7 +7,7 @@ export async function getAccessToken(code: string) {
     const urlParams = new URLSearchParams();
     urlParams.append("grant_type", "authorization_code");
     urlParams.append("code", code);
-    urlParams.append("redirect_uri", "https://localhost:3000/callback");
+    urlParams.append("redirect_uri", process.env.HOST + "/callback");
     urlParams.append("client_id", process.env.SPOTIFY_CLIENT_ID || "");
     urlParams.append("client_secret", process.env.SPOTIFY_CLIENT_SECRET || "");
 
