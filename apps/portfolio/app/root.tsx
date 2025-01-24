@@ -39,6 +39,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <script type="module" src="/registerSW.js" />
       </body>
     </html>
   );

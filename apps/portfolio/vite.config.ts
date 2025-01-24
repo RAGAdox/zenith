@@ -15,7 +15,24 @@ export default defineConfig({
     reactRouter(),
     tsconfigPaths(),
     VitePWA({
-      registerType: "prompt",
+      registerType: "autoUpdate",
+      injectRegister: "script",
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,png,svg}"], // Include index.html in precaching
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === "navigate",
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "html-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+            },
+          },
+        ],
+      },
       devOptions: { enabled: true },
       manifest: {
         name: "RAGAdox",
