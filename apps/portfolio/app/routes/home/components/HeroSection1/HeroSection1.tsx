@@ -4,6 +4,7 @@ import { useAnimate, useInView } from "motion/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import InstallButton from "../../../../components/InstallButton/InstallButton";
 import "./HeroSection1.scss";
 
 const HeroSection1 = ({
@@ -103,6 +104,7 @@ const HeroSection1 = ({
         >
           <p className="text-2xl">Rishi Mukherjee</p>
           <p className="text-lg">Full Stack Web Developer</p>
+          <InstallButton />
           <div className="flex flex-row mt-2 gap-x-4 justify-center">
             <a
               href="http://www.linkedin.com/in/rishi-mukherjee-a89a11142"

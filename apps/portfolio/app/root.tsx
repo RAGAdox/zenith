@@ -23,6 +23,7 @@ export const links: Route.LinksFunction = () => [
     href: "/apple-touch-icon-precomposed.png",
   },
   { rel: "apple-touch-icon", href: "/apple-touch-icon-precomposed.png" },
+  { rel: "manifest", href: "/manifest.webmanifest" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
