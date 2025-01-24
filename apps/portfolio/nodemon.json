@@ -1,0 +1,6 @@
+{
+  "ext": "ts,tsx,js,jsx,json",
+  "delay": "2500",
+  "exec": "yarn build && yarn start",
+  "ignore": ["node_modules", "build"]
+}

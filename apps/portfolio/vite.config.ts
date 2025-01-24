@@ -16,24 +16,17 @@ export default defineConfig({
     tsconfigPaths(),
     VitePWA({
       registerType: "autoUpdate",
-      injectRegister: "script",
+      scope: "/",
       workbox: {
-        globPatterns: ["**/*.{js,css,html,png,svg}"], // Include index.html in precaching
-        runtimeCaching: [
-          {
-            urlPattern: ({ request }) => request.mode === "navigate",
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "html-cache",
-              expiration: {
-                maxEntries: 10,
-                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
-              },
-            },
-          },
-        ],
+        globFollow: true,
+        mode: "production",
+        clientsClaim: true,
+        skipWaiting: true,
+        globDirectory: "build/client",
+        globPatterns: ["**/*.{js,css,html,png,jpg,jpeg,svg,webp,ico,json}"],
+        cleanupOutdatedCaches: true,
+        additionalManifestEntries: [{ url: "/index.html", revision: null }],
       },
-      devOptions: { enabled: true },
       manifest: {
         name: "RAGAdox",
         short_name: "RAGAdox",
@@ -41,32 +34,32 @@ export default defineConfig({
         theme_color: "#000000",
         background_color: "#ffffff",
         display: "standalone",
-        start_url: "/",
+        start_url: "/?utm_source=homescreen",
         id: "com.ragadox",
         handle_links: "preferred",
         categories: ["personal", "portfolio", "resume", "cv"],
         icons: [
           {
-            src: "/assets/apple-touch-icon-precomposed-192x192.png",
+            src: "/apple-touch-icon-precomposed-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/assets/apple-touch-icon-precomposed-512x512.png",
+            src: "/apple-touch-icon-precomposed-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },
         ],
         screenshots: [
           {
-            src: "/assets/screenshot-desktop.png",
+            src: "/screenshot-desktop.png",
             platform: "web",
             sizes: "2560x1664",
             form_factor: "wide",
             label: "Home Page",
           },
           {
-            src: "/assets/screenshot-mobile.png",
+            src: "/screenshot-mobile.png",
             platform: "web",
             sizes: "750x1334",
             form_factor: "narrow",
