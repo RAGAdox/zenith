@@ -64,6 +64,12 @@ const HeroSection1 = ({
         { opacity: [0, 1], scale: [0, 1], y: [10, 0] },
         { duration: 0.2 }
       );
+
+      await animate(
+        "#install-button",
+        { opacity: [0, 1], scale: [0, 1], y: [10, 0] },
+        { duration: 0.2 }
+      );
     }
   };
 
@@ -104,7 +110,6 @@ const HeroSection1 = ({
         >
           <p className="text-2xl">Rishi Mukherjee</p>
           <p className="text-lg">Full Stack Web Developer</p>
-          <InstallButton />
           <div className="flex flex-row mt-2 gap-x-4 justify-center">
             <a
               href="http://www.linkedin.com/in/rishi-mukherjee-a89a11142"
@@ -131,6 +136,9 @@ const HeroSection1 = ({
             >
               <FontAwesomeIcon icon={faEnvelope} size="lg" />
             </a>
+          </div>
+          <div id="install-button" className=" opacity-0">
+            <InstallButton />
           </div>
         </div>
       </section>

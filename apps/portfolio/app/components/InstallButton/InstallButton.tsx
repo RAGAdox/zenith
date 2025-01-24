@@ -16,7 +16,6 @@ const InstallButton = () => {
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (event: any) => {
-      console.log("Before install prompt event triggered");
       // Prevent the mini-infobar from appearing
       event.preventDefault();
       // Save the event for triggering install later
@@ -35,12 +34,9 @@ const InstallButton = () => {
   }, []);
 
   const handleInstallClick = async () => {
-    console.log("Install button clicked");
     if (!deferredPrompt) return;
-
     // Show the install prompt
     deferredPrompt.prompt();
-
     // Wait for the user to respond to the prompt
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === "accepted") {
@@ -54,10 +50,15 @@ const InstallButton = () => {
     setIsInstallable(false);
   };
 
-  return (
-    <button className="border " onClick={handleInstallClick}>
+  return isInstallable ? (
+    <button
+      className="border px-4 py-2 rounded-xl mt-3 text-sm hover:bg-gray-100 hover:text-black"
+      onClick={handleInstallClick}
+    >
       Install Application
     </button>
+  ) : (
+    <></>
   );
 };
 
