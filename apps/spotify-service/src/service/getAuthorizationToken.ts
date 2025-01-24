@@ -3,7 +3,7 @@ export function getAuthorizationTokenURI() {
   const urlParams = new URLSearchParams();
   urlParams.append("client_id", process.env.SPOTIFY_CLIENT_ID || "");
   urlParams.append("response_type", "code");
-  urlParams.append("redirect_uri", process.env.HOST + "/callback");
+  urlParams.append("redirect_uri", process.env.FUNCTION_BASE_URL + "/callback");
   urlParams.append(
     "scope",
     "user-read-playback-state%20user-read-currently-playing"
