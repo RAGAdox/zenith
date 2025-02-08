@@ -9,6 +9,8 @@ const useSSE = () => {
 
   const { getToken } = useAuth();
   const abortControllerRef = useRef<AbortController>(null);
+  const readerRef = useRef<ReadableStreamDefaultReader>(null);
+
   const handleSSE = async () => {
     abortControllerRef.current = new AbortController();
     await fetch(SSE_URL, {
@@ -21,6 +23,10 @@ const useSSE = () => {
     })
       .then((response: Response) => {
         const reader = response.body?.getReader();
+        if (!reader) {
+          return;
+        }
+        readerRef.current = reader;
         const decoder = new TextDecoder("utf-8");
         function read() {
           reader?.read().then(({ value, done }) => {
@@ -43,12 +49,20 @@ const useSSE = () => {
         }
         read();
       })
-      .catch(console.error);
+      .catch((error) => {
+        console.log("In Catch Block");
+        console.error(error);
+      });
   };
 
-  const closeSSE = () => {
+  const closeSSE = async () => {
+    if (readerRef.current) {
+      await readerRef.current.cancel();
+      readerRef.current = null;
+    }
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
+      abortControllerRef.current = null;
     }
   };
 
