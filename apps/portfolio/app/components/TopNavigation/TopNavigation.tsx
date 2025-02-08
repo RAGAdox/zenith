@@ -1,9 +1,7 @@
 import {
   faBars,
   faBookOpen,
-  faCartShopping,
   faCompactDisc,
-  faMusic,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,7 +19,6 @@ import {
   SignedOut,
   SignInButton,
   SignOutButton,
-  useAuth,
 } from "@clerk/clerk-react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useState } from "react";
@@ -32,7 +29,6 @@ import "./TopNavigation.scss";
 const TopNavigation = () => {
   const [animationParent] = useAutoAnimate();
 
-  const { isLoaded, isSignedIn } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const { resourceValue: currentSong } = store["CURRENT_SONG"]();
   return (
@@ -51,11 +47,11 @@ const TopNavigation = () => {
             gapX="2"
             flexGrow="1"
             justify="end"
-            display={{ initial: "none", md: "flex" }}
+            display={{ initial: "none", xs: "flex" }}
             ref={animationParent}
           >
             {currentSong && (
-              <Button variant="soft">
+              <Button variant="outline">
                 <FontAwesomeIcon icon={faCompactDisc} spin />
                 Now Playing
               </Button>
@@ -69,7 +65,10 @@ const TopNavigation = () => {
 
             <SignedIn>
               <Button asChild variant="soft">
-                <RouterLink to="/profile">Profile</RouterLink>
+                <RouterLink to="/profile">
+                  <FontAwesomeIcon icon={faUser} />
+                  Profile
+                </RouterLink>
               </Button>
               <SignOutButton>
                 <Button variant="soft">Sign out</Button>
@@ -82,7 +81,7 @@ const TopNavigation = () => {
             </SignedOut>
           </Flex>
 
-          <Box display={{ initial: "block", md: "none" }}>
+          <Box display={{ initial: "block", xs: "none" }}>
             <Button variant="soft" onClick={() => setIsOpen(!isOpen)}>
               <FontAwesomeIcon icon={faBars} />
             </Button>
@@ -91,24 +90,34 @@ const TopNavigation = () => {
         {isOpen ? (
           <Flex direction="column" align="start" gapY="2">
             <Separator my="3" size="4" />
-            <Button variant="ghost" asChild>
-              <RouterLink to="/current-song" viewTransition>
-                <FontAwesomeIcon icon={faMusic} />
+            {currentSong && (
+              <Button variant="ghost">
+                <FontAwesomeIcon icon={faCompactDisc} spin />
                 Now Playing
-              </RouterLink>
-            </Button>
-            <Button asChild variant="ghost">
-              <RouterLink to="/profile" viewTransition>
-                <FontAwesomeIcon icon={faUser} />
-                Profile
-              </RouterLink>
-            </Button>
+              </Button>
+            )}
             <Button variant="ghost" asChild>
-              <RouterLink to="/cart" viewTransition>
-                <FontAwesomeIcon icon={faCartShopping} />
-                Cart
+              <RouterLink to="/menu" viewTransition>
+                <FontAwesomeIcon icon={faBookOpen} />
+                Menu
               </RouterLink>
             </Button>
+            <SignedIn>
+              <Button asChild variant="ghost">
+                <RouterLink to="/profile">
+                  <FontAwesomeIcon icon={faUser} />
+                  Profile
+                </RouterLink>
+              </Button>
+              <SignOutButton>
+                <Button variant="ghost">Sign out</Button>
+              </SignOutButton>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton mode="modal" withSignUp>
+                <Button variant="ghost">Sign in</Button>
+              </SignInButton>
+            </SignedOut>
           </Flex>
         ) : (
           <></>
