@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "outputs": ["build/**", ".next/**"],
+      "outputs": ["build/**", ".next/**", "dist/**"],
       "env": [
         "VITE_CLERK_PUBLISHABLE_KEY",
         "VITE_HOST_API",
