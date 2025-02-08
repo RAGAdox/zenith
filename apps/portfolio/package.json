@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
-    "start:spa": "serve ./build/client",
+    "dev": "cross-env VITE_PORT=3000 react-router dev",
+    "start:ssr": "react-router-serve ./build/server/index.js",
+    "start": "serve ./build/client -l 3000",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
