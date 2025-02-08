@@ -1,12 +1,4 @@
-import {
-  Box,
-  Code,
-  Flex,
-  Heading,
-  ScrollArea,
-  Text,
-  Theme,
-} from "@radix-ui/themes";
+import { Code, Flex, Heading, ScrollArea, Text, Theme } from "@radix-ui/themes";
 
 import { ClerkProvider } from "@clerk/clerk-react";
 import { useEffect } from "react";
@@ -20,6 +12,7 @@ import {
 } from "react-router";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
+import { Background } from "./components/Background";
 import { TopNavigation } from "./components/TopNavigation";
 import { useIdle, useSSE } from "./hooks";
 
@@ -60,16 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             radius="full"
             style={{ display: "flex", flexDirection: "column" }}
           >
-            <Box
-              minHeight="100svh"
-              minWidth="100vw"
-              position="fixed"
-              style={{
-                backgroundImage:
-                  "linear-gradient(to bottom,var(--accent-2),transparent)",
-                zIndex: "-1",
-              }}
-            />
+            <Background />
             <AuthLoadedLayout>{children}</AuthLoadedLayout>
             <ScrollRestoration />
           </Theme>

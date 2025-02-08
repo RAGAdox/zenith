@@ -9,5 +9,10 @@
       "./.react-router/types"
     ],
     "outDir": "./build",
-  }
+  },
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "types.d.ts"
+  ]
 }
