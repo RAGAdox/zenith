@@ -32,7 +32,15 @@ const TopNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { resourceValue: currentSong } = store["CURRENT_SONG"]();
   return (
-    <Container flexGrow="0" p="2" position="sticky">
+    <Container
+      flexGrow="0"
+      p="2"
+      position="fixed"
+      style={{
+        width: "100%",
+        zIndex: 1,
+      }}
+    >
       <Card className="top-navigation">
         <Flex direction="row" position="relative" justify="between">
           <Box width="50%">
