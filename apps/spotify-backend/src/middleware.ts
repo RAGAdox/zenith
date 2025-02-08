@@ -1,25 +1,14 @@
-import { Receiver } from "@upstash/qstash";
+import { getClerkClient } from "@/app/clients";
+import verifyQStashAPI from "@/app/services/verify-QStash";
+import { catchHttpErrors, throwHttpErrors } from "@/app/utils";
 import { NextRequest, NextResponse } from "next/server";
-import { getClerkClient } from "./app/clients";
-import { catchHttpErrors, throwHttpErrors } from "./app/utils";
+
+const QStashAPIs = ["/api/refresh"];
 
 export async function middleware(request: NextRequest) {
   try {
-    if (request.nextUrl.pathname === "/api/refresh") {
-      const receiver = new Receiver({
-        currentSigningKey: process.env.QSTASH_CURRENT_SIGNING_KEY || "",
-        nextSigningKey: process.env.QSTASH_NEXT_SIGNING_KEY || "",
-      });
-
-      const signature = request.headers.get("Upstash-Signature") || "";
-
-      const rawBody = await request.text();
-
-      const isValid = await receiver.verify({
-        signature: signature,
-        body: rawBody,
-      });
-
+    if (QStashAPIs.includes(request.nextUrl.pathname)) {
+      const isValid = await verifyQStashAPI(request);
       if (isValid) {
         return NextResponse.next();
       }
