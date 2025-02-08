@@ -1,2 +1,6 @@
-/.turbo/
-/node_modules/
+.turbo
+.DS_Store
+node_modules
+# Local Netlify folder
+.netlify
+.vercel

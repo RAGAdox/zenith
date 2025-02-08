@@ -1,0 +1,13 @@
+{
+  "extends": "@zenith/typescript-config/react-config.json",
+  "compilerOptions": {
+    "types": [
+      "vite/client",
+    ],
+    "rootDirs": [
+      ".",
+      "./.react-router/types"
+    ],
+    "outDir": "./build",
+  }
+}
