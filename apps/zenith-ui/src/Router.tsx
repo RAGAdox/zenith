@@ -28,8 +28,8 @@ const ProtectedRoute = ({ route }: ProtectedRouteProps) => {
       throw new Response(null, { status: 403 });
     }
   }
-
-  return <route.element></route.element>;
+  const Element = route.element;
+  return <Element />;
 };
 
 const Router = () => {
@@ -43,7 +43,7 @@ const Router = () => {
       ),
       children: [
         ...ROUTES.map(
-          (route): RouteObject => ({
+          (route: IRoute): RouteObject => ({
             path: route.path,
             element: <ProtectedRoute route={route} />,
           })

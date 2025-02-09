@@ -1,5 +1,11 @@
+import { Heading } from "@radix-ui/themes";
+
 const ProfileRoute = () => {
-  return "Profile";
+  return (
+    <>
+      <Heading>Profile</Heading>
+    </>
+  );
 };
 
 export default ProfileRoute;
