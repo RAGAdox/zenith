@@ -1,26 +1,59 @@
-import { isRouteErrorResponse, useRouteError } from "react-router";
+import { useNavigate, useRouteError } from "react-router";
+import { StatusCompoent } from "../components/StatusComponent";
 
 export default function ErrorBoundary() {
-  console.log("In Error Boundary");
-  const error = useRouteError();
+  const navigate = useNavigate();
 
-  if (isRouteErrorResponse(error)) {
-    if (error.status === 404) {
-      return <div>This page doesn't exist!</div>;
-    }
+  const error: any = useRouteError();
 
-    if (error.status === 401) {
-      return <div>You aren't authorized to see this</div>;
-    }
-
-    if (error.status === 503) {
-      return <div>Looks like our API is down</div>;
-    }
-
-    if (error.status === 418) {
-      return <div>🫖</div>;
-    }
+  if (error.status === 404) {
+    return (
+      <StatusCompoent
+        header="Oops! You’ve hit a wrong note 🎵"
+        subHeader="Don’t worry — let’s help you find your way back!"
+      />
+    );
   }
 
-  return <div>Something went wrong</div>;
+  if (error.status === 401) {
+    return (
+      <StatusCompoent
+        header="Hold up! 🔐"
+        subHeader="Please sign in to access this page."
+        actionButton={{
+          buttonAction: () => {
+            navigate(
+              `/sign-in?referer=${encodeURIComponent(window.location.href)}`
+            );
+          },
+          buttonText: "Sign In",
+        }}
+      />
+    );
+  }
+
+  if (error.status === 403) {
+    return (
+      <StatusCompoent
+        header="Access Denied 🚫"
+        subHeader="It looks like you don’t have permission to view this page."
+      />
+    );
+  }
+
+  if (error.status === 503) {
+    return (
+      <StatusCompoent
+        header="Uh-oh! 🚧"
+        subHeader="Our APIs are taking a break — we’ll be back soon!"
+      />
+    );
+  }
+
+  return (
+    <StatusCompoent
+      header="Oops! 😟"
+      subHeader={error.message ? error.message : undefined}
+    />
+  );
 }

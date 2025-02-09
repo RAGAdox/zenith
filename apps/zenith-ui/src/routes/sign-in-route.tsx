@@ -1,7 +1,11 @@
 import { SignIn } from "@clerk/clerk-react";
+import { useLocation } from "react-router";
 
 const SignInRoute = () => {
-  return <SignIn withSignUp />;
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const forceRedirectUrl = query.get("referer") || undefined;
+  return <SignIn withSignUp forceRedirectUrl={forceRedirectUrl} />;
 };
 
 export default SignInRoute;

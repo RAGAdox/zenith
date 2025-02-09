@@ -19,13 +19,13 @@ const ProtectedRoute = ({ route }: ProtectedRouteProps) => {
 
   if (route.requireAuthentication) {
     if (!isSignedIn) {
-      return <>Authentication Required</>;
+      throw new Response(null, { status: 401 });
     } else if (
       route.requiredRole &&
       role &&
       !route.requiredRole.includes(role)
     ) {
-      return <>Authorization Required</>;
+      throw new Response(null, { status: 403 });
     }
   }
 
