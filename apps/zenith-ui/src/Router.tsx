@@ -1,0 +1,58 @@
+import { useUser } from "@clerk/clerk-react";
+import { createBrowserRouter, RouteObject, RouterProvider } from "react-router";
+import { Loader } from "./components/Loader";
+import { RootLayout } from "./layouts";
+import ErrorBoundary from "./layouts/error-boundary";
+import ROUTES from "./routes";
+
+interface ProtectedRouteProps {
+  route: IRoute;
+}
+
+const ProtectedRoute = ({ route }: ProtectedRouteProps) => {
+  const { isLoaded, isSignedIn, user } = useUser();
+  const role = user?.publicMetadata["role"] as string | undefined;
+
+  if (!isLoaded) {
+    return <Loader />;
+  }
+
+  if (route.requireAuthentication) {
+    if (!isSignedIn) {
+      return <>Authentication Required</>;
+    } else if (
+      route.requiredRole &&
+      role &&
+      !route.requiredRole.includes(role)
+    ) {
+      return <>Authorization Required</>;
+    }
+  }
+
+  return <route.element></route.element>;
+};
+
+const Router = () => {
+  const router = createBrowserRouter([
+    {
+      element: <RootLayout />,
+      errorElement: (
+        <RootLayout>
+          <ErrorBoundary />
+        </RootLayout>
+      ),
+      children: [
+        ...ROUTES.map(
+          (route): RouteObject => ({
+            path: route.path,
+            element: <ProtectedRoute route={route} />,
+          })
+        ),
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
+};
+
+export default Router;
