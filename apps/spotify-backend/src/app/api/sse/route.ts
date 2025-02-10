@@ -1,7 +1,7 @@
 import getCurrentSong from "@/app/services/songs/getCurrentSong";
 import { retriveAccessToken } from "@/app/services/token-storage";
 import { catchHttpErrors, throwHttpErrors } from "@/app/utils";
-import { ISpotifyTrackDetails } from "@/types";
+import { ISpotifyTrackDetails } from "@zenith/types";
 import * as _ from "lodash";
 import { NextRequest, NextResponse } from "next/server";
 

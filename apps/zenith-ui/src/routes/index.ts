@@ -1,8 +1,8 @@
+import { IRoute } from "@zenith/types";
 import IndexRoute from "./index-route";
 import ProfileRoute from "./profile-route";
 import SignInRoute from "./sign-in-route";
 import SignUpRoute from "./sign-up-route";
-
 export { default as IndexRoute } from "./index-route";
 export { default as ProfileRoute } from "./profile-route";
 export { default as SignInRoute } from "./sign-in-route";

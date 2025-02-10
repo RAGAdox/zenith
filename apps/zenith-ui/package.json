@@ -1,5 +1,5 @@
 {
-  "name": "zenith-ui",
+  "name": "@zenith/zenith-ui",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -21,6 +21,7 @@
     "react-router": "^7.1.5"
   },
   "devDependencies": {
+    "@zenith/types": "*",
     "@eslint/js": "^9.19.0",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",

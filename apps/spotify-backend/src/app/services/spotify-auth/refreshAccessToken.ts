@@ -1,5 +1,5 @@
 import { throwHttpErrors } from "@/app/utils";
-import { IToken } from "@/types";
+import { IToken } from "@zenith/types";
 
 export default async function refreshAccessToken(token: IToken) {
   const tokenUrl = "https://accounts.spotify.com/api/token";

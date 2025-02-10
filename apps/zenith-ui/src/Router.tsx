@@ -1,4 +1,5 @@
 import { useUser } from "@clerk/clerk-react";
+import { IRoute } from "@zenith/types";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router";
 import { Loader } from "./components/Loader";
 import { RootLayout } from "./layouts";

@@ -1,5 +1,5 @@
 import { throwHttpErrors } from "@/app/utils";
-import { ISpotifyTrackDetails } from "@/types";
+import { ISpotifyTrackDetails } from "@zenith/types";
 
 export default async function getCurrentSong(accessToken: string) {
   const BASE_URL = "https://api.spotify.com/v1/me/player/currently-playing";
