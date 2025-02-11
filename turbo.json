@@ -1,10 +1,14 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["DATABASE_URL"],
+  "globalDependencies": [".env"],
+  "envMode": "strict",
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["build/**", ".next/**", "dist/**"],
       "env": [
+        "DATABASE_URL",
         "VITE_CLERK_PUBLISHABLE_KEY",
         "VITE_HOST_API",
         "VITE_HOST_API_PROTOCOL",
@@ -58,9 +62,17 @@
         "QSTASH_NEXT_SIGNING_KEY"
       ]
     },
+    "@zenith/repository#push": {
+      "env": ["DATABASE_URL"],
+      "inputs": ["./.env"]
+    },
+    "@zenith/repository#build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["@zenith/repository#push"]
+    },
     "@zenith/types#build": {
       "outputs": ["dist/**"],
-      "dependsOn": []
+      "dependsOn": ["^@zenith/repository#build"]
     }
   }
 }
