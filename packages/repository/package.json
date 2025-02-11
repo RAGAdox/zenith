@@ -12,7 +12,6 @@
   "scripts": {
     "build": "tsc",
     "push": "yarn drizzle-kit generate && yarn drizzle-kit migrate",
-    "dev": "ts-node -P tsconfig.json ./src/index.ts",
     "clean": "rm -rf dist .drizzle"
   },
   "devDependencies": {
@@ -26,6 +25,7 @@
     "@neondatabase/serverless": "^0.10.4",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.2",
+    "drizzle-seed": "^0.3.1",
     "drizzle-zod": "^0.7.0",
     "zod": "^3.24.1"
   }

@@ -1,7 +1,9 @@
-import { useUser } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { IRoute } from "@zenith/types";
+import { useEffect } from "react";
 import { createBrowserRouter, RouteObject, RouterProvider } from "react-router";
 import { Loader } from "./components/Loader";
+import useSSE from "./hooks/useSSE";
 import { RootLayout } from "./layouts";
 import ErrorBoundary from "./layouts/error-boundary";
 import ROUTES from "./routes";
@@ -34,6 +36,8 @@ const ProtectedRoute = ({ route }: ProtectedRouteProps) => {
 };
 
 const Router = () => {
+  const { isLoaded, isSignedIn } = useAuth();
+  const { triggerSSE, closeSSE } = useSSE();
   const router = createBrowserRouter([
     {
       element: <RootLayout />,
@@ -52,6 +56,15 @@ const Router = () => {
       ],
     },
   ]);
+
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      triggerSSE();
+    }
+    return () => {
+      closeSSE();
+    };
+  }, [isLoaded, isSignedIn]);
 
   return <RouterProvider router={router} />;
 };

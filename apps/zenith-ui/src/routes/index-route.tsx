@@ -1,11 +1,12 @@
+import { Flex, Heading } from "@radix-ui/themes";
 import { Link } from "react-router";
 
 const IndexRoute = () => {
   return (
-    <div>
-      IndexRoute
+    <Flex direction="column">
+      <Heading>IndexRoute</Heading>
       <Link to="/profile">Go To Profile</Link>
-    </div>
+    </Flex>
   );
 };
 

@@ -3,7 +3,7 @@ import { Heading } from "@radix-ui/themes";
 const ProfileRoute = () => {
   return (
     <>
-      <Heading>Profile</Heading>
+      <Heading>Profile </Heading>
     </>
   );
 };
