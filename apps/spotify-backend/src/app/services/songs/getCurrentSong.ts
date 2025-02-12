@@ -14,6 +14,7 @@ export default async function getCurrentSong(accessToken: string) {
     return;
   }
   if (!response.ok) {
+    console.log(response.status);
     throwHttpErrors("INTERNAL_ERROR");
   }
   const data = await response.json();

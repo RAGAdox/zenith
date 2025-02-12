@@ -1,11 +1,10 @@
 import { useAuth } from "@clerk/clerk-react";
 import { useRef } from "react";
 import store from "../store";
+import { sse } from "../utils/api";
 
 const useSSE = () => {
-  const host = import.meta.env.VITE_HOST_API;
-  const protocol = import.meta.env.VITE_HOST_API_PROTOCOL || "https";
-  const SSE_URL = `${protocol}://${host}/sse`;
+  const SSE_URL = sse;
 
   const { getToken } = useAuth();
   const abortControllerRef = useRef<AbortController>(null);

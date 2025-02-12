@@ -2,6 +2,7 @@ import { useNavigate, useRouteError } from "react-router";
 import { StatusCompoent } from "../components/StatusComponent";
 
 export default function ErrorBoundary() {
+  console.log("In error boundary");
   const navigate = useNavigate();
 
   const error: any = useRouteError();

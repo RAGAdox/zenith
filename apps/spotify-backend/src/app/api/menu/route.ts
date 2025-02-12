@@ -6,9 +6,9 @@ export async function GET() {
   try {
     const menu: IMenuItemSelect[] = await getMenu();
     return NextResponse.json({ success: true, result: menu });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ success: false });
+    return NextResponse.json({ success: false, error: error.message });
   }
 }
 
@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
     const menuData: IMenuItemInsert = await request.json();
     const result: IMenuItemSelect = await addMenu(menuData);
     return NextResponse.json({ success: true, result });
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ success: false });
+    return NextResponse.json({ success: false, error: error.message });
   }
 }
