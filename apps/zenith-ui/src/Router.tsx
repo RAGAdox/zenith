@@ -8,6 +8,7 @@ import { RootLayout } from "./layouts";
 import ErrorBoundary from "./layouts/error-boundary";
 import ROUTES from "./routes";
 
+// TODO: Use <Protect>
 interface ProtectedRouteProps {
   route: IRoute;
 }

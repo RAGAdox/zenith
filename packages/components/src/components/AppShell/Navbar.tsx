@@ -1,22 +1,22 @@
-import React from "react";
-import Button from "../Button/Button";
+import { Button, Link } from "@/components";
 
 interface NavbarProps {
   title: string;
   titleLink?: string;
-  linkSlot?: React.ComponentType;
   enableSearch?: boolean;
+  userSlot: React.ReactNode;
 }
 export default function Navbar({
   title,
   titleLink,
   enableSearch = false,
+  userSlot,
 }: NavbarProps) {
   return (
     <div className="navbar bg-base-100 shadow-sm sticky top-0 z-10">
       <div className="flex-1">
         <Button variant="navlink" className="text-xl" asChild>
-          <a href={titleLink ? titleLink : "/"}>{title}</a>
+          <Link href={titleLink ? titleLink : "/"}>{title}</Link>
         </Button>
       </div>
       <div className="flex gap-2">
@@ -28,9 +28,9 @@ export default function Navbar({
           }`}
         />
         <Button variant="navlink">
-          <a href="/menu">Menu</a>
+          <Link href="/menu">Menu</Link>
         </Button>
-        <div className="dropdown dropdown-end [position:unset] md:relative">
+        {/* <div className="dropdown dropdown-end [position:unset] md:relative">
           <div
             tabIndex={0}
             role="button"
@@ -53,24 +53,25 @@ export default function Navbar({
                 variant="navlink"
                 className="flex justify-between"
               >
-                <a href="/profile">
+                <Link href="/profile">
                   Profile
                   <span className="badge badge-primary end-0">New</span>
-                </a>
+                </Link>
               </Button>
             </li>
             <li>
               <Button asChild variant={"navlink"} className="justify-between">
-                <a href="/settings">Settings</a>
+                <Link href="/settings">Settings</Link>
               </Button>
             </li>
             <li>
               <Button asChild variant={"navlink"} className="justify-between">
-                <a href="/signout">Log out</a>
+                <Link href="/signout">Log out</Link>
               </Button>
             </li>
           </ul>
-        </div>
+        </div> */}
+        {userSlot}
       </div>
     </div>
   );

@@ -5,18 +5,31 @@ import Navbar from "./Navbar";
 interface AppShellProps {
   classname?: string;
   bodyClassname?: string;
+  enableSearch?: boolean;
   children: React.ReactNode;
+  userSlot: React.ReactNode;
 }
 
-const AppShell = ({ classname, children, bodyClassname }: AppShellProps) => {
+const AppShell = ({
+  classname,
+  children,
+  bodyClassname,
+  enableSearch,
+  userSlot,
+}: AppShellProps) => {
   return (
     <main
       className={cn(
-        classname,
-        "h-screen w-full flex flex-col items-center justify-between bg-base-300"
+        "h-screen w-full flex flex-col items-center justify-between bg-base-300",
+        classname
       )}
     >
-      <Navbar title="Zenith" titleLink="/" />
+      <Navbar
+        title="Zenith"
+        titleLink="/"
+        enableSearch={enableSearch}
+        userSlot={userSlot}
+      />
       <div className={cn("flex-grow", bodyClassname)}>{children}</div>
     </main>
   );

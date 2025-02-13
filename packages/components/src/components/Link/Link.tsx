@@ -1,23 +1,16 @@
 import { cn } from "@/lib";
 import React from "react";
+import { useZenithContext } from "../ZenithContext/ZenithContext";
 
-interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-  asChild?: boolean;
-}
+type LinkProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const Link = ({
-  asChild = false,
-  href,
-  children,
-  className,
-  ...props
-}: LinkProps) => {
-  console.log("link == >asChild===>", asChild);
+const Link = ({ href, children, className, ...props }: LinkProps) => {
+  const Comp = useZenithContext() || "a";
   return (
-    <a href={href} className={cn("btn", className)} {...props}>
+    <Comp href={href} className={cn(className)} {...props}>
       {children}
-    </a>
+    </Comp>
   );
 };
-
+export type { LinkProps };
 export default Link;
