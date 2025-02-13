@@ -1,7 +1,6 @@
 import { cn } from "@/lib";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
-
 import React from "react";
 
 const buttonVariants = cva("btn", {
@@ -37,4 +36,5 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
+export type { ButtonProps };
 export default Button;

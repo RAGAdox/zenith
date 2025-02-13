@@ -1,4 +1,5 @@
 import { cn } from "@/lib";
+import React from "react";
 import Navbar from "./Navbar";
 
 interface AppShellProps {
@@ -20,5 +21,5 @@ const AppShell = ({ classname, children, bodyClassname }: AppShellProps) => {
     </main>
   );
 };
-
+export type { AppShellProps };
 export default AppShell;

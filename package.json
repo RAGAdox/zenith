@@ -2,11 +2,11 @@
   "name": "zenith",
   "version": "1.0.0",
   "license": "MIT",
-  "private": "true",
+  "private": true,
   "packageManager": "yarn@1.22.22",
   "scripts": {
     "build": "turbo build",
-    "build:types":"turbo run @zenith/types#build",
+    "build:types": "turbo run @zenith/types#build",
     "dev": "turbo dev",
     "start": "turbo start"
   },
@@ -15,6 +15,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "turbo": "^2.4.0"
   }
 }

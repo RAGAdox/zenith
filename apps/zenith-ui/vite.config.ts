@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react-swc";
 import { defineConfig, loadEnv } from "vite";
 
@@ -9,6 +10,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: parseInt(env.VITE_PORT || "3002", 10),
     },
-    plugins: [react()],
+    plugins: [tailwindcss(), react()],
   };
 });
