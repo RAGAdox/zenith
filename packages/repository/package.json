@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "push": "yarn drizzle-kit generate && yarn drizzle-kit migrate",
+    "push": "yarn drizzle-kit push",
     "clean": "rm -rf dist .drizzle"
   },
   "devDependencies": {

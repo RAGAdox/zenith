@@ -5,6 +5,7 @@
   "private": true,
   "packageManager": "yarn@1.22.22",
   "scripts": {
+    "ci": "yarn install --forzen-lockfile",
     "build": "turbo build",
     "build:types": "turbo run @zenith/types#build",
     "dev": "turbo dev",
