@@ -1,2 +1,3 @@
-@import "@zenith/components/style.css";
+@import "tailwindcss";
 
+@import "@zenith/components/style.css";

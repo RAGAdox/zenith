@@ -1,20 +1,6 @@
-import { Box } from "@radix-ui/themes";
-
+// TODO: Remove Component
 const Background = () => {
-  return (
-    <>
-      <Box
-        minHeight="100svh"
-        minWidth="100vw"
-        position="fixed"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom,var(--accent-2),transparent)",
-          zIndex: "-2",
-        }}
-      />
-    </>
-  );
+  return <></>;
 };
 
 export default Background;

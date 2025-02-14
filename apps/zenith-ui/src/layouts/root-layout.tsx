@@ -39,13 +39,11 @@ const UserSlot = () => {
 
 const RootLayout = ({ children }: { children?: ReactNode }) => {
   return (
-    <>
-      <ZenithProvider linkComponent={RouterLink}>
-        <AppShell enableSearch classname="w-xl" userSlot={<UserSlot />}>
-          {children ? children : <Outlet />}
-        </AppShell>
-      </ZenithProvider>
-    </>
+    <ZenithProvider linkComponent={RouterLink}>
+      <AppShell enableSearch userSlot={<UserSlot />}>
+        {children ? children : <Outlet />}
+      </AppShell>
+    </ZenithProvider>
   );
 };
 

@@ -1,10 +1,12 @@
-import { Heading } from "@radix-ui/themes";
 import { Link } from "@zenith/components";
 const ProfileRoute = () => {
   return (
     <>
       <Link href="/">Test</Link>
-      <Heading className="bg-red-500">Profile </Heading>
+
+      <h1>Profile</h1>
+
+      <h3>This is the profile page.</h3>
     </>
   );
 };

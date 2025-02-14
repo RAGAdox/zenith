@@ -1,16 +1,12 @@
-import { Flex, Heading } from "@radix-ui/themes";
-import { Button } from "@zenith/components";
-import { Link } from "react-router";
+import { Link } from "@zenith/components";
+import {} from "react-router";
 
 const IndexRoute = () => {
   return (
-    <Flex direction="column">
-      <Heading>IndexRoute</Heading>
-      <Link to="/profile">Go To Profile</Link>
-
-      <a href="http://localhost:3001/api/authorization">Authorize</a>
-      <Button>Hello World!</Button>
-    </Flex>
+    <div className="flex flex-col items-center justify-center">
+      <h1>Greeings</h1>
+      <Link href="/profile">Go to Profile</Link>
+    </div>
   );
 };
 

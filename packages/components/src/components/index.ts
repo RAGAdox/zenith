@@ -4,8 +4,11 @@ export { default as AppShell } from "./AppShell/AppShell";
 export type { ButtonProps } from "./Button";
 export { default as Button } from "./Button/Button";
 
+export { Link } from "./Link";
 export type { LinkProps } from "./Link";
-export { default as Link } from "./Link/Link";
+
+export { SignInComponent } from "./SignInComponent";
+export type { SignInComponentProps } from "./SignInComponent";
 
 export type { ZenithProviderProps } from "./ZenithContext";
 export { default as ZenithProvider } from "./ZenithContext/ZenithContext";

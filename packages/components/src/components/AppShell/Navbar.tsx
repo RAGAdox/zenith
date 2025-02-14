@@ -27,7 +27,7 @@ export default function Navbar({
             !enableSearch && "hidden"
           }`}
         />
-        <Button variant="navlink">
+        <Button variant="navlink" asChild>
           <Link href="/menu">Menu</Link>
         </Button>
         {/* <div className="dropdown dropdown-end [position:unset] md:relative">
