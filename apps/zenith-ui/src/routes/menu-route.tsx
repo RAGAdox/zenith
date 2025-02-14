@@ -1,27 +1,35 @@
 import { useEffect } from "react";
 import { Loader } from "../components/Loader";
-import { StatusCompoent } from "../components/StatusComponent";
 import useFetch from "../hooks/useFetch";
 
 const MenuRoute = () => {
   // TODO: Need to set isProtectedApi to false
-  const { execute, isSuccess, data, isFetching, isLoaded, isError, error } =
+  const { store, isSuccess, data, isFetching, isLoaded, isError, error } =
     useFetch("menu", {
       method: "GET",
       isProtectedApi: true,
-      executeOnMount: false,
+      // executeOnMount: true,
     });
 
   useEffect(() => {
-    execute(true);
+    // execute(true);
   }, []);
+
+  console.log("store", store);
 
   if (isSuccess) {
     return <>{JSON.stringify(data)}</>;
   }
 
   if (isError) {
-    return <StatusCompoent header={error} />;
+    return (
+      <>
+        <h1 className="text-center">Oops! 😟</h1>
+        <h4 className="text-center">
+          {error ? error : "Somethings doesn't feel right"}
+        </h4>
+      </>
+    );
   }
 
   if (isFetching || !isLoaded) {

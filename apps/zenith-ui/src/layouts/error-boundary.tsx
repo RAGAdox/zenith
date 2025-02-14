@@ -1,60 +1,77 @@
-import { useNavigate, useRouteError } from "react-router";
-import { StatusCompoent } from "../components/StatusComponent";
+import { Link } from "@zenith/components";
+import { useRouteError } from "react-router";
 
 export default function ErrorBoundary() {
   console.log("In error boundary");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const error: any = useRouteError();
 
   if (error.status === 404) {
     return (
-      <StatusCompoent
-        header="Oops! You’ve hit a wrong note 🎵"
-        subHeader="Don’t worry — let’s help you find your way back!"
-      />
+      <>
+        <h1 className="text-center">Oops! You’ve hit a wrong note 🎵</h1>
+        <h4 className="text-center">
+          Don’t worry — let’s help you find your way <Link href="/">back!</Link>
+        </h4>
+      </>
     );
   }
 
   if (error.status === 401) {
     return (
-      <StatusCompoent
-        header="Hold up! 🔐"
-        subHeader="Please sign in to access this page."
-        actionButton={{
-          buttonAction: () => {
-            navigate(
-              `/sign-in?referer=${encodeURIComponent(window.location.href)}`
-            );
-          },
-          buttonText: "Sign In",
-        }}
-      />
+      <>
+        <h1 className="text-center">Hold up! 🔐</h1>
+        <h4 className="text-center">
+          Please{" "}
+          <Link
+            href={`/sign-in?"referer=${encodeURIComponent(
+              window.location.href
+            )}"`}
+          >
+            Sign In
+          </Link>{" "}
+          to access this page.
+        </h4>
+      </>
     );
   }
 
   if (error.status === 403) {
     return (
-      <StatusCompoent
-        header="Access Denied 🚫"
-        subHeader="It looks like you don’t have permission to view this page."
-      />
+      <>
+        <h1 className="text-center">Access Denied 🚫</h1>
+        <h4 className="text-center">
+          It looks like you don’t have permission to view this page.
+        </h4>
+      </>
     );
   }
 
   if (error.status === 503) {
     return (
-      <StatusCompoent
-        header="Uh-oh! 🚧"
-        subHeader="Our APIs are taking a break — we’ll be back soon!"
-      />
+      <>
+        <h1 className="text-center">Uh-oh! 🚧</h1>
+        <h4 className="text-center">
+          Our APIs are taking a break — we’ll be back soon!
+        </h4>
+        <p className="text-center">
+          If the problem persists, please contact us at{" "}
+          <a href="mailto:support@zenith.com" target="_blank">
+            support@zenith.com
+          </a>
+          .
+        </p>
+      </>
     );
   }
 
   return (
-    <StatusCompoent
-      header="Oops! 😟"
-      subHeader={error.message ? error.message : undefined}
-    />
+    <>
+      <h1 className="text-center">Oops! 😟</h1>
+      <h4 className="text-center">
+        {error.message ? error.message : "Somethings doesn't feel right"}
+      </h4>
+    </>
   );
 }

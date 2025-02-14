@@ -133,6 +133,11 @@ const useFetch = (
       } else {
         setError(urlKey, data.error || "Unknown Error Occured");
       }
+    } else if (!shouldExecute) {
+      setError(
+        urlKey,
+        "You are not signed in or this api requires authentication"
+      );
     }
   };
 
