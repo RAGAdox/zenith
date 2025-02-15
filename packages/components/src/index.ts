@@ -4,6 +4,7 @@ export {
   Button,
   Link,
   MenuItem,
+  SelectCustomizations,
   SignInComponent,
   ZenithProvider,
 } from "./components";
@@ -12,6 +13,7 @@ export type {
   ButtonProps,
   LinkProps,
   MenuItemProps,
+  SelectCustomizationsProps,
   SignInComponentProps,
   ZenithProviderProps,
 } from "./components";

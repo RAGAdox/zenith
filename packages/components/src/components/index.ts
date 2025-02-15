@@ -13,6 +13,9 @@ export type { SignInComponentProps } from "./SignInComponent";
 export { MenuItem } from "./MenuItem";
 export type { MenuItemProps } from "./MenuItem";
 
+export { SelectCustomizations } from "./SelectCustomizations";
+export type { SelectCustomizationsProps } from "./SelectCustomizations";
+
 export { UserButton } from "./UserButton";
 
 export type { ZenithProviderProps } from "./ZenithContext";

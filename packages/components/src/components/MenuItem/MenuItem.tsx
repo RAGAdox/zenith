@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
-
 import { IMenuItemSelect } from "@zenith/types";
 import { Button } from "../Button";
 
 interface MenuItemProps extends IMenuItemSelect {
   variant?: "full" | "small";
   itemsInCart?: number[][];
+  handleOpenModal: () => void;
   onAddToCart: (itemId: number, customizationIds: number[]) => void;
   onRemoveFromCart: (itemId: number) => void;
 }
@@ -16,20 +15,21 @@ const MenuItem = ({
   description,
   price,
   imageUrl,
-  customizations,
-  onAddToCart,
+  // customizations,
+  // onAddToCart,
+  handleOpenModal,
   onRemoveFromCart,
 }: MenuItemProps) => {
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const [selectedCustomizations, setSelectedCustomizations] = useState<
-    number[]
-  >([]);
+  // const modalRef = useRef<HTMLDialogElement>(null);
+  // const [selectedCustomizations, setSelectedCustomizations] = useState<
+  //   number[]
+  // >([]);
 
-  const handleOpenModal = () => {
-    if (modalRef.current) {
-      modalRef.current.showModal();
-    }
-  };
+  // const handleOpenModal = () => {
+  //   if (modalRef.current) {
+  //     modalRef.current.showModal();
+  //   }
+  // };
 
   return (
     <div className="card card-xs bg-base-100 shadow-sm max-w-sm">
@@ -65,7 +65,7 @@ const MenuItem = ({
         </div>
       </div>
 
-      <dialog
+      {/* <dialog
         ref={modalRef}
         className="modal modal-bottom sm:modal-middle"
         id={`customization-modal-${id}`}
@@ -109,7 +109,7 @@ const MenuItem = ({
             </Button>
           </div>
         </div>
-      </dialog>
+      </dialog> */}
     </div>
   );
 };
