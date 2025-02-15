@@ -1,4 +1,5 @@
 export type {
+  IMenuItemCustomizationSelect,
   IMenuItemInsert,
   IMenuItemSelect,
 } from "@zenith/repository/dist/repository";

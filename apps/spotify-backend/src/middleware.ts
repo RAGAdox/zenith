@@ -4,9 +4,19 @@ import { catchHttpErrors, throwHttpErrors } from "@/app/utils";
 import { NextRequest, NextResponse } from "next/server";
 
 const QStashAPIs = ["/api/refresh"];
+const publicAPIs = [{ route: "/api/menu", method: "POST" }];
 
 export async function middleware(request: NextRequest) {
   try {
+    if (
+      publicAPIs.some(
+        ({ route, method }) =>
+          request.nextUrl.pathname === route && request.method === method
+      )
+    ) {
+      return NextResponse.next();
+    }
+
     if (QStashAPIs.includes(request.nextUrl.pathname)) {
       const isValid = await verifyQStashAPI(request);
       if (isValid) {

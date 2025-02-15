@@ -5101,7 +5101,7 @@ d3-zoom@^3.0.0:
 
 daisyui@^5.0.0-beta.8:
   version "5.0.0-beta.8"
-  resolved "https://registry.npmjs.org/daisyui/-/daisyui-5.0.0-beta.8.tgz"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.0.0-beta.8.tgz#32aacc5c995460638f1128428ce60d48989c4f15"
   integrity sha512-jSokqm5i+Pv1jG80wliNzMHjmcF+iMx5xRUpk0/QExVoVNyQNWeCsaWJQubPvUq7bt9nzSsQTR2uIZBoyIIoaA==
 
 damerau-levenshtein@^1.0.8:

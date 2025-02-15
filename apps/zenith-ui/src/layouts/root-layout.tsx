@@ -1,10 +1,4 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { AppShell, Button, ZenithProvider } from "@zenith/components";
+import { AppShell, ZenithProvider } from "@zenith/components";
 import { ReactNode } from "react";
 import { Link, Outlet } from "react-router";
 
@@ -22,27 +16,10 @@ const RouterLink = ({ children, href, ...props }: RouterLinkProps) => {
   );
 };
 
-const UserSlot = () => {
-  return (
-    <>
-      <SignedOut>
-        <Button variant="ghost" asChild>
-          <SignInButton mode="modal" />
-        </Button>
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-    </>
-  );
-};
-
 const RootLayout = ({ children }: { children?: ReactNode }) => {
   return (
     <ZenithProvider linkComponent={RouterLink}>
-      <AppShell enableSearch userSlot={<UserSlot />}>
-        {children ? children : <Outlet />}
-      </AppShell>
+      <AppShell enableSearch>{children ? children : <Outlet />}</AppShell>
     </ZenithProvider>
   );
 };

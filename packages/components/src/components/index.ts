@@ -10,5 +10,10 @@ export type { LinkProps } from "./Link";
 export { SignInComponent } from "./SignInComponent";
 export type { SignInComponentProps } from "./SignInComponent";
 
+export { MenuItem } from "./MenuItem";
+export type { MenuItemProps } from "./MenuItem";
+
+export { UserButton } from "./UserButton";
+
 export type { ZenithProviderProps } from "./ZenithContext";
 export { default as ZenithProvider } from "./ZenithContext/ZenithContext";

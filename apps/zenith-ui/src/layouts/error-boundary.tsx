@@ -24,13 +24,7 @@ export default function ErrorBoundary() {
         <h1 className="text-center">Hold up! 🔐</h1>
         <h4 className="text-center">
           Please{" "}
-          <Link
-            href={`/sign-in?"referer=${encodeURIComponent(
-              window.location.href
-            )}"`}
-          >
-            Sign In
-          </Link>{" "}
+          <Link href={`/sign-in?referer=${window.location.href}`}>Sign In</Link>{" "}
           to access this page.
         </h4>
       </>

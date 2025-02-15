@@ -13,6 +13,9 @@ export interface IMenuItemInsert extends InferInsertModel<typeof menuItems> {
   >[];
 }
 
+export interface IMenuItemCustomizationSelect
+  extends InferSelectModel<typeof itemCustomizations> {}
+
 export async function getMenu(): Promise<IMenuItemSelect[]> {
   const db = getDrizzleDB();
 

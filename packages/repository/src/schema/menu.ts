@@ -7,6 +7,7 @@ export const menuItems = pgTable("menu", {
   name: t.varchar({ length: 100 }).notNull(),
   description: t.text(),
   price: t.decimal({ scale: 2 }).notNull().default("0.00"),
+  imageUrl: t.text(),
 });
 
 export const itemCustomizations = pgTable(
