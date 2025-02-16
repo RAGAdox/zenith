@@ -5,7 +5,7 @@ const IndexRoute = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <h1>Greeings</h1>
-      <Link href="/profile">Go to Profile</Link>
+      <Link href="/table">reserve table</Link>
       <SignOutButton>
         <Link>Sign Out</Link>
       </SignOutButton>

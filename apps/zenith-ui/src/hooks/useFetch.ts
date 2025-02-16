@@ -5,6 +5,7 @@ import { createWithEqualityFn } from "zustand/traditional";
 import urls, { TypeOfUrls } from "../utils/api";
 
 interface UseFetchOptions {
+  requestData?: any;
   method: "GET" | "POST" | "PUT" | "DELETE";
   isProtectedApi?: boolean;
   executeOnMount?: boolean;
@@ -94,18 +95,22 @@ const setError = (key: TypeOfUrls, error: any) =>
 const useFetch = (
   urlKey: TypeOfUrls,
   {
+    requestData,
     method = "GET",
     isProtectedApi = true,
     executeOnMount = true,
     revalidate = 3600,
     localCache = true,
   }: UseFetchOptions
-): { execute: (force?: boolean) => void; store: I_DATA } & I_DATA => {
+): {
+  execute: (requestData: any, force?: boolean) => void;
+  store: I_DATA;
+} & I_DATA => {
   const url = urls[urlKey];
   const { getToken, isSignedIn, isLoaded } = useAuth();
   const lastUpdatedAt = FETCH_DATA((state) => state[urlKey].lastUpdatedAt);
 
-  const execute = async (force: boolean = false) => {
+  const execute = async (requestData: any, force: boolean = false) => {
     const shouldRevalidate =
       (!lastUpdatedAt ||
         new Date().getTime() - lastUpdatedAt.getTime() > revalidate * 1000) &&
@@ -116,6 +121,7 @@ const useFetch = (
       console.log("Execute===>");
       start(urlKey);
       const response = await fetch(url, {
+        body: JSON.stringify(requestData),
         method,
         headers: {
           ...(isProtectedApi && isSignedIn
@@ -143,7 +149,7 @@ const useFetch = (
 
   useEffect(() => {
     if (executeOnMount && isLoaded) {
-      execute();
+      execute(requestData);
     }
   }, [isLoaded]);
 

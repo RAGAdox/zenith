@@ -4,38 +4,37 @@ import { Loader } from "../components/Loader";
 
 import { MenuItem, SelectCustomizations } from "@zenith/components";
 import useFetch from "../hooks/useFetch";
+import CART_STORE, { addToCart, removeFromCart } from "../store/cartStore";
 
 const MenuRoute = () => {
-  // TODO: Need to set isProtectedApi to false
   const { isSuccess, data, isFetching, isLoaded, isError, error } = useFetch(
     "menu",
     {
       method: "GET",
       isProtectedApi: true,
-      // executeOnMount: true,
+      executeOnMount: true,
     }
   );
-  const [cart, setCart] = useState<Record<number, number[][]>>({});
+  const cart = CART_STORE((store) => store);
+
+  const { execute: postCart } = useFetch("cart", {
+    method: "POST",
+    isProtectedApi: true,
+    executeOnMount: false,
+    localCache: false,
+  });
+
   const modalRef = useRef<HTMLDialogElement>(null);
   const [currentItem, setCurrentItem] = useState<IMenuItemSelect>();
 
-  const handleAddToCart = (id: number, customizationIds: number[]) => {
-    setCart((currentCart) => {
-      return {
-        ...currentCart,
-        [id]: [...(currentCart[id] ?? []), customizationIds],
-      };
-    });
+  const handleAddToCart = async (id: number, customizationIds: number[]) => {
+    await postCart({ id, customizationIds }, true);
+    addToCart(id, customizationIds);
     modalRef.current?.close();
   };
 
   const handleRemoveFromCart = (id: number) => {
-    setCart((currentCart) => {
-      return {
-        ...currentCart,
-        [id]: [...currentCart[id].slice(0, -1)],
-      };
-    });
+    removeFromCart(id);
   };
 
   if (isSuccess) {

@@ -25,34 +25,43 @@ export async function GET(request: NextRequest) {
     const stream = new ReadableStream({
       async start(controller) {
         setSongInterval = setInterval(async () => {
-          const currentSong = await getCurrentSong(token!.accessToken);
-          if (currentSong) {
-            if (!_.isEqual(currentSong, oldSongData)) {
-              oldSongData = currentSong;
-              const event =
-                "data: " +
-                JSON.stringify({
-                  resource: "CURRENT_SONG",
-                  value: currentSong,
-                  success: true,
-                }) +
-                "\n\n";
-              controller.enqueue(encoder.encode(event));
-            }
-          } else {
-            const responseData = {
-              resource: "CURRENT_SONG",
-              error: "NOT_PLAYING",
-              success: false,
-            };
-            if (!_.isEqual(responseData, oldSongData) || notPlayingCount > 10) {
-              notPlayingCount = 0;
-              oldSongData = responseData;
-              const event = "data: " + JSON.stringify(responseData) + "\n\n";
-              controller.enqueue(encoder.encode(event));
+          try {
+            const currentSong = await getCurrentSong(token!.accessToken);
+            if (currentSong) {
+              if (!_.isEqual(currentSong, oldSongData)) {
+                oldSongData = currentSong;
+                const event =
+                  "data: " +
+                  JSON.stringify({
+                    resource: "CURRENT_SONG",
+                    value: currentSong,
+                    success: true,
+                  }) +
+                  "\n\n";
+                controller.enqueue(encoder.encode(event));
+              }
             } else {
-              notPlayingCount++;
+              const responseData = {
+                resource: "CURRENT_SONG",
+                error: "NOT_PLAYING",
+                success: false,
+              };
+              if (
+                !_.isEqual(responseData, oldSongData) ||
+                notPlayingCount > 10
+              ) {
+                notPlayingCount = 0;
+                oldSongData = responseData;
+                const event = "data: " + JSON.stringify(responseData) + "\n\n";
+                controller.enqueue(encoder.encode(event));
+              } else {
+                notPlayingCount++;
+              }
             }
+          } catch (error: any) {
+            console.error(error);
+            clearInterval(setSongInterval);
+            controller.close();
           }
         }, 1000);
 

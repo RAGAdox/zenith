@@ -1,7 +1,9 @@
 import { IRoute } from "@zenith/types";
+import CartRoute from "./cart-route";
 import IndexRoute from "./index-route";
 import MenuRoute from "./menu-route";
 import ProfileRoute from "./profile-route";
+import ReserveTableRoute from "./reserve-table-route";
 import SignInRoute from "./sign-in-route";
 import SignUpRoute from "./sign-up-route";
 import SongRoute from "./song-route";
@@ -39,6 +41,16 @@ const ROUTES: IRoute[] = [
     requireAuthentication: false,
     allowAuthenticated: false,
     element: SignUpRoute,
+  },
+  {
+    path: "/cart",
+    requireAuthentication: true,
+    element: CartRoute,
+  },
+  {
+    path: "/table",
+    requireAuthentication: true,
+    element: ReserveTableRoute,
   },
 ];
 
