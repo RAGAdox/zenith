@@ -4,7 +4,7 @@ import { Button } from "../Button";
 
 interface SelectCustomizationsProps {
   item?: IMenuItemSelect;
-  onAddToCart: (itemId: number, customizationIds: number[]) => void;
+  onAddToCart: (itemId: number, customizationIds: number[]) => Promise<void>;
 }
 const SelectCustomizations = forwardRef<
   HTMLDialogElement,
@@ -28,6 +28,7 @@ const SelectCustomizations = forwardRef<
                 <input
                   type="checkbox"
                   className="checkbox"
+                  checked={selectedCustomizations.some((item) => item === id)}
                   onChange={() => {
                     if (selectedCustomizations.includes(id)) {
                       setSelectedCustomizations(
@@ -51,7 +52,9 @@ const SelectCustomizations = forwardRef<
           <div className="modal-action">
             <Button
               onClick={() => {
-                onAddToCart(item.id, selectedCustomizations);
+                onAddToCart(item.id, selectedCustomizations).then(() =>
+                  setSelectedCustomizations([])
+                );
               }}
             >
               Add to Cart

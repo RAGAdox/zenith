@@ -4,11 +4,11 @@ import { currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 export async function GET() {
   try {
-    const tableId = (await currentUser())!.publicMetadata.tableId as string;
-    const ably = getAblyClient();
+    const userId = (await currentUser())!.id;
+    const ably = getAblyClient(userId);
     const tokenRequest = await ably.auth.createTokenRequest({
-      capability: { [`cart:${tableId}`]: ["subscribe", "presence"] },
-      clientId: "cartUser",
+      capability: { [`cart:*`]: ["subscribe", "presence"] },
+      clientId: userId,
     });
     return NextResponse.json(tokenRequest);
   } catch (error) {

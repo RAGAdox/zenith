@@ -1,12 +1,14 @@
 import { IMenuItemSelect } from "@zenith/types";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Loader } from "../components/Loader";
 
 import { MenuItem, SelectCustomizations } from "@zenith/components";
+import { useNavigate } from "react-router";
 import useFetch from "../hooks/useFetch";
 import CART_STORE, { addToCart, removeFromCart } from "../store/cartStore";
 
 const MenuRoute = () => {
+  const navigate = useNavigate();
   const { isSuccess, data, isFetching, isLoaded, isError, error } = useFetch(
     "menu",
     {
@@ -15,10 +17,17 @@ const MenuRoute = () => {
       executeOnMount: true,
     }
   );
-  const cart = CART_STORE((store) => store);
-
+  const cart = CART_STORE((store) => store.data);
+  const tableId = CART_STORE((store) => store.tableId);
   const { execute: postCart } = useFetch("cart", {
     method: "POST",
+    isProtectedApi: true,
+    executeOnMount: false,
+    localCache: false,
+  });
+
+  const { execute: popCart } = useFetch("cart", {
+    method: "DELETE",
     isProtectedApi: true,
     executeOnMount: false,
     localCache: false,
@@ -27,14 +36,23 @@ const MenuRoute = () => {
   const modalRef = useRef<HTMLDialogElement>(null);
   const [currentItem, setCurrentItem] = useState<IMenuItemSelect>();
 
+  useEffect(() => {
+    if (!tableId) {
+      navigate("/table");
+      return;
+    }
+  }, []);
+
   const handleAddToCart = async (id: number, customizationIds: number[]) => {
-    await postCart({ id, customizationIds }, true);
     addToCart(id, customizationIds);
+    postCart({ tableId, id, customizationIds }, true);
+
     modalRef.current?.close();
   };
 
   const handleRemoveFromCart = (id: number) => {
     removeFromCart(id);
+    popCart({ tableId, id }, true);
   };
 
   if (isSuccess) {
@@ -61,39 +79,6 @@ const MenuRoute = () => {
           onAddToCart={handleAddToCart}
           item={currentItem}
         />
-
-        {/* <div className="flex flex-col justify-center">
-          {Object.entries(cart).map(([key, value], index) => {
-            const item = data.find(
-              (i: IMenuItemSelect) => i.id === Number(key)
-            );
-
-            return (
-              <div key={`${index}-${key}`} className="flex flex-col">
-                {value.map((customizationIds: number[], customizationIndex) => {
-                  const customizations =
-                    item.customizations?.filter((c: any) =>
-                      customizationIds.includes(c.id)
-                    ) ?? [];
-
-                  return (
-                    <ul>
-                      {item.name}
-
-                      {customizations.map((c: any, ciIndex: number) => (
-                        <li
-                          key={`${index}-${item.id}-${customizationIndex}-${c.name}`}
-                        >
-                          {c.name}
-                        </li>
-                      ))}
-                    </ul>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div> */}
       </>
     );
   }

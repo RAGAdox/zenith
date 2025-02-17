@@ -120,6 +120,7 @@ const useFetch = (
     if ((shouldExecute && shouldRevalidate) || force) {
       console.log("Execute===>");
       start(urlKey);
+      console.log("body==>", JSON.stringify(requestData));
       const response = await fetch(url, {
         body: JSON.stringify(requestData),
         method,

@@ -1,7 +1,6 @@
 import { ClerkProvider } from "@clerk/clerk-react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { AblyProvider } from "./context";
 import "./index.css";
 import Router from "./Router";
 
@@ -14,9 +13,7 @@ if (!PUBLISHABLE_KEY) {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-      <AblyProvider>
-        <Router />
-      </AblyProvider>
+      <Router />
     </ClerkProvider>
   </StrictMode>
 );
