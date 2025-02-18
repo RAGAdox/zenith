@@ -4,6 +4,10 @@ import { useEffect } from "react";
 import { createWithEqualityFn } from "zustand/traditional";
 import urls, { TypeOfUrls } from "../utils/api";
 
+type ExecuteArgs = {
+  requestData?: any;
+  force?: boolean;
+};
 interface UseFetchOptions {
   requestData?: any;
   method: "GET" | "POST" | "PUT" | "DELETE";
@@ -11,6 +15,7 @@ interface UseFetchOptions {
   executeOnMount?: boolean;
   revalidate?: number;
   localCache?: boolean;
+  onSuccessCallback?: (data?: any) => void;
 }
 
 export type I_DATA = {
@@ -101,16 +106,17 @@ const useFetch = (
     executeOnMount = true,
     revalidate = 3600,
     localCache = true,
+    onSuccessCallback = () => {},
   }: UseFetchOptions
 ): {
-  execute: (requestData: any, force?: boolean) => void;
+  execute: (value: ExecuteArgs) => void;
   store: I_DATA;
 } & I_DATA => {
   const url = urls[urlKey];
   const { getToken, isSignedIn, isLoaded } = useAuth();
   const lastUpdatedAt = FETCH_DATA((state) => state[urlKey].lastUpdatedAt);
 
-  const execute = async (requestData: any, force: boolean = false) => {
+  const execute = async ({ requestData, force = false }: ExecuteArgs) => {
     const shouldRevalidate =
       (!lastUpdatedAt ||
         new Date().getTime() - lastUpdatedAt.getTime() > revalidate * 1000) &&
@@ -118,9 +124,8 @@ const useFetch = (
     const shouldExecute =
       !isProtectedApi || (isProtectedApi && isLoaded && isSignedIn);
     if ((shouldExecute && shouldRevalidate) || force) {
-      console.log("Execute===>");
       start(urlKey);
-      console.log("body==>", JSON.stringify(requestData));
+
       const response = await fetch(url, {
         body: JSON.stringify(requestData),
         method,
@@ -137,6 +142,7 @@ const useFetch = (
       const data = await response.json();
       if (data.success) {
         setData(urlKey, data.result);
+        onSuccessCallback(data.result);
       } else {
         setError(urlKey, data.error || "Unknown Error Occured");
       }
@@ -150,7 +156,7 @@ const useFetch = (
 
   useEffect(() => {
     if (executeOnMount && isLoaded) {
-      execute(requestData);
+      execute({ requestData });
     }
   }, [isLoaded]);
 

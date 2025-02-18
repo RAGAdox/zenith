@@ -1,5 +1,9 @@
 import { getAblyClient } from "@/app/clients";
-import { addItemToCart, retriveCart } from "@/app/services/cart-storage";
+import {
+  addItemToCart,
+  removeFromCart,
+  retriveCart,
+} from "@/app/services/cart-storage";
 import { retriveTableId } from "@/app/services/table-storage";
 import { catchHttpErrors, throwHttpErrors } from "@/app/utils";
 import { currentUser } from "@clerk/nextjs/server";
@@ -15,9 +19,9 @@ export async function GET() {
     }
     const cartData = await retriveCart(tableId);
     if (!cartData) {
-      return new NextResponse(null, { status: 204 });
+      return NextResponse.json({ success: false, error: "NO_CART_FOUND" });
     }
-    return NextResponse.json(cartData);
+    return NextResponse.json({ result: cartData, success: true });
   } catch (error) {
     return catchHttpErrors(error);
   }
@@ -47,8 +51,14 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
-    const { tableId, id } = await request.json();
+    const { id } = await request.json();
     const userId = (await currentUser())!.id;
+    const tableId = await retriveTableId(userId);
+    if (!tableId) {
+      throwHttpErrors("AUTHORIZATION_ERROR");
+      return;
+    }
+    await removeFromCart(tableId, id);
     const ablyClient = getAblyClient(userId);
     await ablyClient.channels.get(`cart:${tableId}`).publish("pop", { id });
     return NextResponse.json({ success: true });

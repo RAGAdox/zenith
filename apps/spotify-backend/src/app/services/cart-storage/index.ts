@@ -3,10 +3,6 @@ import { getRedisClient } from "@/app/clients";
 const getCartKey = (tableId: string): string => {
   return `cart:${tableId}`;
 };
-async function createCartByTableId(tableId: string) {
-  const client = getRedisClient();
-  await client.hset(getCartKey(tableId), { 10: [[101, 102], [], [101]] });
-}
 
 async function getCart(
   tableId: string
@@ -34,7 +30,7 @@ async function setCartItem(
   customizationIds: number[][]
 ) {
   const client = getRedisClient();
-  await client.hset(tableId, { [itemId]: customizationIds });
+  await client.hset(getCartKey(tableId), { [itemId]: customizationIds });
 }
 
 export async function addItemToCart(
@@ -43,10 +39,6 @@ export async function addItemToCart(
   customizationIds: number[]
 ) {
   const existingCartItem = await getCartItem(tableId, itemId);
-
-  if (!existingCartItem) {
-    await createCartByTableId(tableId);
-  }
   await setCartItem(tableId, itemId, [
     ...(existingCartItem ?? []),
     customizationIds,

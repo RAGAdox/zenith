@@ -6,14 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const { tableId } = await request.json();
-    // const tableId = request.nextUrl.searchParams.get("tableId");
     if (!tableId) {
       throwHttpErrors("BAD_REQUEST");
       return;
     }
     const userId = (await currentUser())!.id;
     await reserveTable({ tableId, userId });
-    return NextResponse.json({ success: true, tableId });
+    return NextResponse.json({ success: true, result: tableId });
   } catch (error) {
     return catchHttpErrors(error);
   }
@@ -24,9 +23,12 @@ export async function GET() {
     const userId = (await currentUser())!.id;
     const tableId = await retriveTableId(userId);
     if (!tableId) {
-      return new NextResponse(null, { status: 204 });
+      return NextResponse.json({
+        success: false,
+        error: "NO_RESERVATION_FOUND",
+      });
     }
-    return NextResponse.json({ tableId });
+    return NextResponse.json({ success: true, result: { tableId } });
   } catch (error) {
     return catchHttpErrors(error);
   }

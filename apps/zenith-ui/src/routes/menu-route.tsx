@@ -45,14 +45,14 @@ const MenuRoute = () => {
 
   const handleAddToCart = async (id: number, customizationIds: number[]) => {
     addToCart(id, customizationIds);
-    postCart({ tableId, id, customizationIds }, true);
+    postCart({ requestData: { tableId, id, customizationIds }, force: true });
 
     modalRef.current?.close();
   };
 
   const handleRemoveFromCart = (id: number) => {
     removeFromCart(id);
-    popCart({ tableId, id }, true);
+    popCart({ requestData: { id }, force: true });
   };
 
   if (isSuccess) {

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { useAbly } from "../hooks";
 
 const CartRoute = () => {
-  
   const navigate = useNavigate();
   const { ably, isAblyLoaded } = useAbly();
   const { isLoaded, isSignedIn, user } = useUser();
@@ -16,10 +15,7 @@ const CartRoute = () => {
     }
     if (isAblyLoaded) {
       const cartChanel = ably.channels.get(
-        `cart:${user.publicMetadata.tableId}`,
-        {
-          params: { rewind: "1440m" },
-        }
+        `cart:${user.publicMetadata.tableId}`
       );
       console.log("Cart subscribed");
       cartChanel.subscribe("push", (message) => {
