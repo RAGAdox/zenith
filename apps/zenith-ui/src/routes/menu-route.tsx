@@ -4,7 +4,7 @@ import { Loader } from "../components/Loader";
 
 import { MenuItem, SelectCustomizations } from "@zenith/components";
 import { useNavigate } from "react-router";
-import useFetch from "../hooks/useFetch";
+import useFetch, { FETCH_DATA } from "../hooks/useFetch";
 import CART_STORE, { addToCart, removeFromCart } from "../store/cartStore";
 
 const MenuRoute = () => {
@@ -18,7 +18,7 @@ const MenuRoute = () => {
     }
   );
   const cart = CART_STORE((store) => store.data);
-  const tableId = CART_STORE((store) => store.tableId);
+  const tableId = FETCH_DATA((store) => store.table.data?.tableId);
   const { execute: postCart } = useFetch("cart", {
     method: "POST",
     isProtectedApi: true,
@@ -45,7 +45,10 @@ const MenuRoute = () => {
 
   const handleAddToCart = async (id: number, customizationIds: number[]) => {
     addToCart(id, customizationIds);
-    postCart({ requestData: { tableId, id, customizationIds }, force: true });
+    postCart({
+      requestData: { tableId, id, customizationIds },
+      force: true,
+    });
 
     modalRef.current?.close();
   };

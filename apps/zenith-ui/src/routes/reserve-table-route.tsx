@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router";
+import { Loader } from "../components/Loader";
 import { useFetch } from "../hooks";
-import CART_STORE, { addToCart, setTable } from "../store/cartStore";
+import { FETCH_DATA } from "../hooks/useFetch";
+import { addToCart } from "../store/cartStore";
 
 const ReserveTableRoute = () => {
   const navigate = useNavigate();
-  const { execute } = useFetch("cart", {
+  const { execute: getCart } = useFetch("cart", {
     method: "GET",
     isProtectedApi: true,
     executeOnMount: false,
@@ -15,15 +17,17 @@ const ReserveTableRoute = () => {
       );
     },
   });
-  const tableId = CART_STORE((store) => store.tableId);
+  const { data, isError, isFetching, isLoaded, isSuccess } = FETCH_DATA(
+    (store) => store.table
+  );
+  // console.log("FETCH_DATA Store===>", tableId);
   const { execute: postTable } = useFetch("table", {
     method: "POST",
     isProtectedApi: true,
     executeOnMount: false,
     onSuccessCallback(data: string) {
       if (data) {
-        setTable(data);
-        execute({ force: true });
+        getCart({ force: true });
         navigate("/menu");
       }
     },
@@ -31,27 +35,30 @@ const ReserveTableRoute = () => {
 
   const [value, setValue] = useState<string>("");
 
-  useEffect(() => {
-    if (tableId) {
-      navigate("/menu");
-    }
-  }, [tableId]);
   const handleReservation = async () => {
     if (value) {
       postTable({ requestData: { tableId: value }, force: true });
     }
   };
 
-  return (
-    <div>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      ></input>
-      <button onClick={handleReservation}>Reserve</button>
-    </div>
-  );
+  if (isFetching || !isLoaded) {
+    return <Loader />;
+  }
+  if (isSuccess && data.tableId) {
+    return <Navigate to="/menu" />;
+  }
+  if (isError || !isFetching) {
+    return (
+      <div>
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        ></input>
+        <button onClick={handleReservation}>Reserve</button>
+      </div>
+    );
+  }
 };
 
 export default ReserveTableRoute;

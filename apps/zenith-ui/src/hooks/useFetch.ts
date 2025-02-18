@@ -109,7 +109,7 @@ const useFetch = (
     onSuccessCallback = () => {},
   }: UseFetchOptions
 ): {
-  execute: (value: ExecuteArgs) => void;
+  execute: (value: ExecuteArgs) => Promise<void>;
   store: I_DATA;
 } & I_DATA => {
   const url = urls[urlKey];
@@ -123,33 +123,38 @@ const useFetch = (
       localCache;
     const shouldExecute =
       !isProtectedApi || (isProtectedApi && isLoaded && isSignedIn);
-    if ((shouldExecute && shouldRevalidate) || force) {
-      start(urlKey);
+    try {
+      if ((shouldExecute && shouldRevalidate) || force) {
+        start(urlKey);
 
-      const response = await fetch(url, {
-        body: JSON.stringify(requestData),
-        method,
-        headers: {
-          ...(isProtectedApi && isSignedIn
-            ? { Authorization: `Bearer ${await getToken()}` }
-            : {}),
-        },
-      });
-      if (!response.ok) {
-        setError(urlKey, response.statusText || "Unknow Error Occured");
+        const response = await fetch(url, {
+          body: JSON.stringify(requestData),
+          method,
+          headers: {
+            ...(isProtectedApi && isSignedIn
+              ? { Authorization: `Bearer ${await getToken()}` }
+              : {}),
+          },
+        });
+        if (!response.ok) {
+          setError(urlKey, response.statusText || "Unknow Error Occured");
+        }
+        const data = await response.json();
+        if (data.success) {
+          setData(urlKey, data.result);
+          onSuccessCallback(data.result);
+        } else {
+          setError(urlKey, data.error || "Unknown Error Occured");
+        }
+      } else if (!shouldExecute) {
+        setError(
+          urlKey,
+          "You are not signed in or this api requires authentication"
+        );
       }
-      const data = await response.json();
-      if (data.success) {
-        setData(urlKey, data.result);
-        onSuccessCallback(data.result);
-      } else {
-        setError(urlKey, data.error || "Unknown Error Occured");
-      }
-    } else if (!shouldExecute) {
-      setError(
-        urlKey,
-        "You are not signed in or this api requires authentication"
-      );
+    } catch (error: any) {
+      setError(urlKey, error.message || "Something went wrong");
+      return error;
     }
   };
 

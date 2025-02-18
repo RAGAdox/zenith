@@ -2,11 +2,7 @@ import { AppShell, ZenithProvider } from "@zenith/components";
 import { ReactNode, useEffect } from "react";
 import { Link, Outlet } from "react-router";
 import { useAbly, useFetch } from "../hooks";
-import CART_STORE, {
-  addToCart,
-  removeFromCart,
-  setTable,
-} from "../store/cartStore";
+import { addToCart, removeFromCart } from "../store/cartStore";
 
 interface RouterLinkProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -26,15 +22,10 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
   const { ably, isAblyLoaded, clientId } = useAbly();
 
   /* Get tableId for loggedIn user */
-  useFetch("table", {
+  const { data: tableData } = useFetch("table", {
     method: "GET",
     isProtectedApi: true,
     executeOnMount: true,
-    onSuccessCallback(data) {
-      if (data && data.tableId) {
-        setTable(data.tableId);
-      }
-    },
   });
 
   /* get Cart Details already stored */
@@ -49,10 +40,9 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
     },
   });
 
-  const tableId = CART_STORE((store) => store.tableId);
   useEffect(() => {
-    if (isAblyLoaded && tableId) {
-      const cartChanel = ably.channels.get(`cart:${tableId}`);
+    if (isAblyLoaded && tableData?.tableId) {
+      const cartChanel = ably.channels.get(`cart:${tableData.tableId}`);
 
       cartChanel.subscribe("push", (message) => {
         if (message.clientId !== clientId) {
@@ -65,7 +55,7 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
         }
       });
     }
-  }, [isAblyLoaded, tableId]);
+  }, [isAblyLoaded, tableData]);
   return (
     <ZenithProvider linkComponent={RouterLink}>
       <AppShell enableSearch>{children ? children : <Outlet />}</AppShell>
