@@ -6,6 +6,8 @@ export { default as Button } from "./Button/Button";
 
 export { Link } from "./Link";
 export type { LinkProps } from "./Link";
+export { TextInput } from "./TextInput";
+export type { TextInputProps, TextInputRef } from "./TextInput";
 
 export { SignInComponent } from "./SignInComponent";
 export type { SignInComponentProps } from "./SignInComponent";

@@ -11,6 +11,6 @@ export const getDrizzleDB = () => {
   if (!DB_URL) {
     throw new Error("DATABASE_URL not set in environment variable");
   }
-  db = drizzle(DB_URL, { casing: "snake_case", logger: false, schema });
+  db = drizzle(DB_URL, { casing: "snake_case", logger: true, schema });
   return db;
 };

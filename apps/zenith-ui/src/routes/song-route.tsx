@@ -1,3 +1,4 @@
+import { Loader } from "../components/Loader";
 import { SongComponent } from "../components/SongComponent";
 import store from "../store";
 
@@ -6,7 +7,7 @@ const SongRoute = () => {
   return currentSong ? (
     <SongComponent spotifyTrackDetails={currentSong} variant="small" />
   ) : (
-    <></>
+    <Loader />
   );
 };
 

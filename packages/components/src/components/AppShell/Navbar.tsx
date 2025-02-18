@@ -1,9 +1,11 @@
 import { Button, Link } from "@/components";
+import React from "react";
 
 interface NavbarProps {
   title: string;
   titleLink?: string;
   enableSearch?: boolean;
+  secondaryElement: React.ReactNode;
   drawerToggle: React.ReactNode;
 }
 export default function Navbar({
@@ -11,6 +13,7 @@ export default function Navbar({
   titleLink,
   enableSearch = false,
   drawerToggle,
+  secondaryElement,
 }: NavbarProps) {
   return (
     <div className="navbar  bg-base-100 shadow-sm sticky top-0 z-10">
@@ -27,9 +30,7 @@ export default function Navbar({
             !enableSearch && "hidden"
           }`}
         />
-        <Button variant="navlink" asChild>
-          <Link href="/menu">Menu</Link>
-        </Button>
+        {secondaryElement}
         {drawerToggle}
       </div>
     </div>

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     }
     const userId = (await currentUser())!.id;
     await reserveTable({ tableId, userId });
-    return NextResponse.json({ success: true, result: tableId });
+    return NextResponse.json({ success: true, result: { tableId } });
   } catch (error) {
     return catchHttpErrors(error);
   }

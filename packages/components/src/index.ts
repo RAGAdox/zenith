@@ -6,6 +6,7 @@ export {
   MenuItem,
   SelectCustomizations,
   SignInComponent,
+  TextInput,
   ZenithProvider,
 } from "./components";
 export type {
@@ -15,5 +16,7 @@ export type {
   MenuItemProps,
   SelectCustomizationsProps,
   SignInComponentProps,
+  TextInputProps,
+  TextInputRef,
   ZenithProviderProps,
 } from "./components";

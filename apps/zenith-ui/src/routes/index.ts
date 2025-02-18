@@ -21,7 +21,6 @@ const ROUTES: IRoute[] = [
   {
     path: "/profile",
     requireAuthentication: true,
-    requiredRole: ["admin"],
     element: ProfileRoute,
   },
   {

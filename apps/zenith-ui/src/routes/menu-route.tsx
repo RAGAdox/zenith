@@ -46,7 +46,7 @@ const MenuRoute = () => {
   const handleAddToCart = async (id: number, customizationIds: number[]) => {
     addToCart(id, customizationIds);
     postCart({
-      requestData: { tableId, id, customizationIds },
+      requestData: { id, customizationIds },
       force: true,
     });
 

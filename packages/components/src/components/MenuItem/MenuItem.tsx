@@ -15,22 +15,9 @@ const MenuItem = ({
   description,
   price,
   imageUrl,
-  // customizations,
-  // onAddToCart,
   handleOpenModal,
   onRemoveFromCart,
 }: MenuItemProps) => {
-  // const modalRef = useRef<HTMLDialogElement>(null);
-  // const [selectedCustomizations, setSelectedCustomizations] = useState<
-  //   number[]
-  // >([]);
-
-  // const handleOpenModal = () => {
-  //   if (modalRef.current) {
-  //     modalRef.current.showModal();
-  //   }
-  // };
-
   return (
     <div className="card card-xs bg-base-100 shadow-sm max-w-sm">
       <figure className="mt-0 mb-0 aspect-video">
@@ -64,52 +51,6 @@ const MenuItem = ({
           )}
         </div>
       </div>
-
-      {/* <dialog
-        ref={modalRef}
-        className="modal modal-bottom sm:modal-middle"
-        id={`customization-modal-${id}`}
-      >
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">Customize your order</h3>
-          <div className="flex flex-col">
-            {customizations?.map(({ id, name, additionalPrice }) => (
-              <label key={id} className="label cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="checkbox"
-                  onChange={() => {
-                    if (selectedCustomizations.includes(id)) {
-                      setSelectedCustomizations(
-                        selectedCustomizations.filter((item) => item !== id)
-                      );
-                    } else {
-                      setSelectedCustomizations([
-                        ...selectedCustomizations,
-                        id,
-                      ]);
-                    }
-                  }}
-                />
-                <div className="flex-grow flex flex-row justify-between">
-                  <span>{name}</span>
-                  <span>{additionalPrice}</span>
-                </div>
-              </label>
-            ))}
-          </div>
-          <div className="modal-action">
-            <Button
-              onClick={() => {
-                onAddToCart(id, selectedCustomizations);
-                modalRef.current!.close();
-              }}
-            >
-              Add to Cart
-            </Button>
-          </div>
-        </div>
-      </dialog> */}
     </div>
   );
 };

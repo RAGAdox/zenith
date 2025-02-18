@@ -1,8 +1,14 @@
-import { AppShell, ZenithProvider } from "@zenith/components";
+import { SignOutButton, useAuth } from "@clerk/clerk-react";
+import {
+  AppShell,
+  Button,
+  Link as ZenithLink,
+  ZenithProvider,
+} from "@zenith/components";
 import { ReactNode, useEffect } from "react";
 import { Link, Outlet } from "react-router";
 import { useAbly, useFetch } from "../hooks";
-import { addToCart, removeFromCart } from "../store/cartStore";
+import { addToCart, removeFromCart, setCart } from "../store/cartStore";
 
 interface RouterLinkProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -19,6 +25,7 @@ const RouterLink = ({ children, href, ...props }: RouterLinkProps) => {
 };
 
 const RootLayout = ({ children }: { children?: ReactNode }) => {
+  const { isSignedIn } = useAuth();
   const { ably, isAblyLoaded, clientId } = useAbly();
 
   /* Get tableId for loggedIn user */
@@ -34,9 +41,7 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
     isProtectedApi: true,
     executeOnMount: true,
     onSuccessCallback(data) {
-      Object.keys(data).map((itemId) =>
-        addToCart(parseInt(itemId), data[itemId])
-      );
+      setCart(data);
     },
   });
 
@@ -56,9 +61,59 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
       });
     }
   }, [isAblyLoaded, tableData]);
+
+  const SecondaryElement = tableData?.tableId ? (
+    <Button variant="navlink">
+      <ZenithLink href="/menu">Menu</ZenithLink>
+    </Button>
+  ) : (
+    <Button variant="navlink">
+      <ZenithLink href="/table">Reserve</ZenithLink>
+    </Button>
+  );
+
+  const SideBarLinks = [
+    ...(isSignedIn
+      ? [
+          {
+            href: "/profile",
+            display: "Profile",
+          },
+          {
+            href: "/cart",
+            display: "Cart",
+          },
+          {
+            href: "/song",
+            display: "Now Playing",
+          },
+        ]
+      : [
+          {
+            href: "sign-in",
+            display: "Sign Up / Login",
+          },
+        ]),
+  ];
+
+  const SignOut = isSignedIn ? (
+    <SignOutButton>
+      <Button variant="navlink">Sign out</Button>
+    </SignOutButton>
+  ) : (
+    <></>
+  );
+
   return (
     <ZenithProvider linkComponent={RouterLink}>
-      <AppShell enableSearch>{children ? children : <Outlet />}</AppShell>
+      <AppShell
+        secondaryElement={SecondaryElement}
+        sideBarLink={SideBarLinks}
+        signOutComponent={SignOut}
+        enableSearch
+      >
+        {children ? children : <Outlet />}
+      </AppShell>
     </ZenithProvider>
   );
 };

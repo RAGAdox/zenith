@@ -1,1 +1,1 @@
-export { addMenu, getMenu } from "./repository";
+export { addMenu, getCartItems, getMenu } from "./repository";

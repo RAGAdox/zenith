@@ -1,26 +1,26 @@
-import { useState } from "react";
+import { TextInput, TextInputRef } from "@zenith/components";
+import { useRef } from "react";
 import { Navigate, useNavigate } from "react-router";
 import { Loader } from "../components/Loader";
 import { useFetch } from "../hooks";
 import { FETCH_DATA } from "../hooks/useFetch";
-import { addToCart } from "../store/cartStore";
+import { setCart } from "../store/cartStore";
 
 const ReserveTableRoute = () => {
+  const inputRef = useRef<TextInputRef>(null);
   const navigate = useNavigate();
   const { execute: getCart } = useFetch("cart", {
     method: "GET",
     isProtectedApi: true,
     executeOnMount: false,
     onSuccessCallback(data) {
-      Object.keys(data).map((itemId) =>
-        addToCart(parseInt(itemId), data[itemId])
-      );
+      setCart(data);
     },
   });
   const { data, isError, isFetching, isLoaded, isSuccess } = FETCH_DATA(
     (store) => store.table
   );
-  // console.log("FETCH_DATA Store===>", tableId);
+
   const { execute: postTable } = useFetch("table", {
     method: "POST",
     isProtectedApi: true,
@@ -33,11 +33,15 @@ const ReserveTableRoute = () => {
     },
   });
 
-  const [value, setValue] = useState<string>("");
+  // const [value, setValue] = useState<string>("");
 
   const handleReservation = async () => {
+    const value = inputRef.current?.getValue();
     if (value) {
-      postTable({ requestData: { tableId: value }, force: true });
+      postTable({
+        requestData: { tableId: value },
+        force: true,
+      });
     }
   };
 
@@ -50,11 +54,7 @@ const ReserveTableRoute = () => {
   if (isError || !isFetching) {
     return (
       <div>
-        <input
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        ></input>
+        <TextInput ref={inputRef} />
         <button onClick={handleReservation}>Reserve</button>
       </div>
     );

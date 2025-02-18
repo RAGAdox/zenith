@@ -8,6 +8,12 @@ const CART_STORE = create<I_CART_STORE>()(() => ({
   data: {},
 }));
 
+export function setCart(data: Record<number, number[][]>) {
+  CART_STORE.setState(() => ({
+    data,
+  }));
+}
+
 export function addToCart(id: number, customizationIds: number[]) {
   CART_STORE.setState((store: I_CART_STORE) => ({
     ...store,
