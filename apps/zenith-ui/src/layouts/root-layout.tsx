@@ -31,7 +31,6 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
     isProtectedApi: true,
     executeOnMount: true,
     onSuccessCallback(data) {
-      console.log("OnSuccess Callback from get table===>", data);
       if (data && data.tableId) {
         setTable(data.tableId);
       }
@@ -44,7 +43,6 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
     isProtectedApi: true,
     executeOnMount: true,
     onSuccessCallback(data) {
-      console.log("GET cart ====>", data);
       Object.keys(data).map((itemId) =>
         addToCart(parseInt(itemId), data[itemId])
       );
@@ -53,21 +51,16 @@ const RootLayout = ({ children }: { children?: ReactNode }) => {
 
   const tableId = CART_STORE((store) => store.tableId);
   useEffect(() => {
-    console.log("rootLayout useEffect===>");
     if (isAblyLoaded && tableId) {
       const cartChanel = ably.channels.get(`cart:${tableId}`);
-      console.log("Subscriped to ", tableId);
+
       cartChanel.subscribe("push", (message) => {
         if (message.clientId !== clientId) {
-          console.log(message.clientId, clientId);
-          console.log("Abby cartChanel ===>", message);
           addToCart(message.data.id, message.data.customizationIds);
         }
       });
       cartChanel.subscribe("pop", (message) => {
         if (message.clientId !== clientId) {
-          console.log(message.clientId, clientId);
-          console.log("Abby cartChanel ===>", message);
           removeFromCart(message.data.id);
         }
       });

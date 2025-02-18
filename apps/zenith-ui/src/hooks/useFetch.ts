@@ -136,7 +136,6 @@ const useFetch = (
         },
       });
       if (!response.ok) {
-        console.log("Fetch Error", response.status);
         setError(urlKey, response.statusText || "Unknow Error Occured");
       }
       const data = await response.json();

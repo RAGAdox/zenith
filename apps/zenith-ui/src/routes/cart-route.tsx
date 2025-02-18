@@ -5,22 +5,13 @@ import { useAbly } from "../hooks";
 
 const CartRoute = () => {
   const navigate = useNavigate();
-  const { ably, isAblyLoaded } = useAbly();
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { isAblyLoaded } = useAbly();
+  const { isLoaded, isSignedIn } = useUser();
 
   useEffect(() => {
     if (!(isLoaded && isSignedIn)) {
       navigate("/table");
       return;
-    }
-    if (isAblyLoaded) {
-      const cartChanel = ably.channels.get(
-        `cart:${user.publicMetadata.tableId}`
-      );
-      console.log("Cart subscribed");
-      cartChanel.subscribe("push", (message) => {
-        console.log("Abby cartChanel ===>", message);
-      });
     }
   }, [isAblyLoaded, isLoaded, isSignedIn]);
 

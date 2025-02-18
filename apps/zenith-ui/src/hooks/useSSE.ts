@@ -35,7 +35,6 @@ const useSSE = () => {
 
               const message = decoder.decode(value, { stream: true });
               const data = JSON.parse(message.slice(6));
-              console.log(data);
               if (data.success) {
                 store[data.resource as keyof typeof store]
                   .getState()
@@ -48,13 +47,12 @@ const useSSE = () => {
               read();
             })
             .catch((error) => {
-              console.log("Reader Error==>", error);
+              console.error("Reader Error==>", error);
             });
         }
         read();
       })
       .catch((error) => {
-        console.log("In Catch Block");
         console.error(error);
       });
   };

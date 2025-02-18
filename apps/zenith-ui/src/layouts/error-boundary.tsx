@@ -2,7 +2,6 @@ import { Link } from "@zenith/components";
 import { useRouteError } from "react-router";
 
 export default function ErrorBoundary() {
-  console.log("In error boundary");
   // const navigate = useNavigate();
 
   const error: any = useRouteError();

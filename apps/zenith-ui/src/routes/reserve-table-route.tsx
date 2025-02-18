@@ -10,7 +10,6 @@ const ReserveTableRoute = () => {
     isProtectedApi: true,
     executeOnMount: false,
     onSuccessCallback(data) {
-      console.log("GET cart ====>", data);
       Object.keys(data).map((itemId) =>
         addToCart(parseInt(itemId), data[itemId])
       );
@@ -33,7 +32,6 @@ const ReserveTableRoute = () => {
   const [value, setValue] = useState<string>("");
 
   useEffect(() => {
-    console.log("reserve-table-route useEffect===>", tableId);
     if (tableId) {
       navigate("/menu");
     }
@@ -43,7 +41,7 @@ const ReserveTableRoute = () => {
       postTable({ requestData: { tableId: value }, force: true });
     }
   };
-  console.log("Rerender ===>", tableId);
+
   return (
     <div>
       <input

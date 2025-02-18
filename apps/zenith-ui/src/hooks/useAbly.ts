@@ -22,7 +22,6 @@ export default function useAbly(): UseAbly {
   const [isAblyLoaded, setIsAblyLoaded] = useState(false);
 
   const setAblyClient = async () => {
-    console.log("Setting ably client");
     const client = new Ably.Realtime({
       authUrl: urls.ably_token,
       authHeaders: {
