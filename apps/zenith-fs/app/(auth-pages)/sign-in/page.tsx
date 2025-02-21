@@ -6,7 +6,6 @@ import Link from "next/link";
 
 export default async function Login(props: { searchParams: Promise<any> }) {
   const searchParams = await props.searchParams;
-  console.log()
   return (
     <div className="card max-w-sm w-full bg-base-100 m-4 p-4 prose">
       <form className="flex-1 flex flex-col min-w-64">
