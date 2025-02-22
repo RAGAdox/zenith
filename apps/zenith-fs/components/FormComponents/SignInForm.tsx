@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/components/Button";
+import Input from "@/components/Input";
 import useForm from "@/hooks/useForm";
 import useTimeout from "@/hooks/useTimeout";
 import { PasswordAction } from "@/types/action";
@@ -59,8 +60,8 @@ const SignInForm = ({ signInAction }: SignInFormProps) => {
           <label htmlFor="email" className="label px-3">
             <span>Email</span>
           </label>
-          <input
-            className="input w-full"
+          <Input
+            className={`w-full ${formError.email && formError.email.length > 0 ? "input-error" : ""}`}
             name="email"
             placeholder="you@example.com"
             value={formData.email}
@@ -85,8 +86,8 @@ const SignInForm = ({ signInAction }: SignInFormProps) => {
               Forgot Password?
             </Link>
           </label>
-          <input
-            className="input w-full"
+          <Input
+            className={`w-full ${formError.confirmPassword && formError.confirmPassword.length > 0 ? "input-error" : ""}`}
             value={formData.password}
             onChange={handleChange}
             onBlur={handleBlur}
