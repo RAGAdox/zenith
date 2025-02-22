@@ -1,8 +1,10 @@
 "use client";
 
 import useForm from "@/hooks/useForm";
-import useUrlMessage from "@/hooks/useUrlMessage";
-import { useState } from "react";
+import useTimeout from "@/hooks/useTimeout";
+import { PasswordAction } from "@/types/action";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { z } from "zod";
 
 const SignUpSchema = z
@@ -28,37 +30,40 @@ const SignUpSchema = z
   });
 
 interface SignUpFormProps {
-  signUpAction: (formData: FormData) => Promise<void>;
+  signUpAction: (formData: FormData) => Promise<PasswordAction>;
 }
 
 export default function SignUpForm({ signUpAction }: SignUpFormProps) {
-  const [isPending, setPending] = useState<boolean>(false);
-  const serverMessage = useUrlMessage();
+  const router = useRouter();
 
-  const { formData, formError, isFormValid, handleChange, handleBlur } =
-    useForm<z.infer<typeof SignUpSchema>>(SignUpSchema, {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+  const {
+    formData,
+    formError,
+    isFormInValid,
+    handleChange,
+    handleBlur,
+    formAction,
+    pending,
+    state,
+  } = useForm<z.infer<typeof SignUpSchema>>(SignUpSchema, signUpAction, {
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  // Optional: Track form submission state
+  const { remainingTime, startTimeout } = useTimeout({
+    timeoutSec: 5,
+    callback: () => router.push("/"),
+  });
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    serverMessage?.clearMessage();
-    handleChange(e);
-  };
-
-  const handleFormSubmit = async () => {
-    setPending(true);
-    const data = new FormData();
-    data.append("email", formData.email);
-    data.append("password", formData.password);
-    signUpAction(data).then(() => setPending(false));
-  };
+  useEffect(() => {
+    if (state && state.success) {
+      startTimeout();
+    }
+  }, [state]);
 
   return (
-    <form className="flex-1 flex flex-col min-w-64 w-full">
+    <form action={formAction} className="flex-1 flex flex-col min-w-64 w-full">
       <h1 className="mt-0 mb-0">Sign up</h1>
       <p>
         Already have an account? <a href="/sign-in">Sign in</a>
@@ -76,7 +81,7 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
             placeholder="you@example.com"
             required
             value={formData.email}
-            onChange={handleFormChange}
+            onChange={handleChange}
             onBlur={handleBlur}
           />
           {formError.email &&
@@ -98,7 +103,7 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
             placeholder="Your password"
             required
             value={formData.password}
-            onChange={handleFormChange}
+            onChange={handleChange}
           />
           {formError.password &&
             formError.password.map((err: string, index: number) => (
@@ -119,7 +124,7 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
             placeholder="Confirm your password"
             required
             value={formData.confirmPassword}
-            onChange={handleFormChange}
+            onChange={handleChange}
           />
           {formError.confirmPassword &&
             formError.confirmPassword.map((err: string, index: number) => (
@@ -129,22 +134,22 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
             ))}
         </div>
 
-        {serverMessage?.errorMessage && (
-          <span className="px-3 text-error text-xs">
-            {serverMessage.errorMessage}
+        {state && !state.success && (
+          <span className="px-3 text-error text-xs">{state.error}</span>
+        )}
+
+        {state && state.success && (
+          <span className="px-3 text-success text-xs">
+            Sign up successful
+            <br />
+            Redirecting in {remainingTime} seconds
           </span>
         )}
         <button
-          type="submit"
           className="btn"
-          onClick={handleFormSubmit}
-          disabled={
-            isPending ||
-            isFormValid() ||
-            typeof serverMessage.errorMessage === "string"
-          }
+          disabled={pending || isFormInValid() || state !== null}
         >
-          {isPending ? "Signing up..." : "Sign up"}
+          {pending ? "Signing up..." : "Sign up"}
         </button>
       </div>
     </form>

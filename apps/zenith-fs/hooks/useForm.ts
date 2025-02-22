@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { PasswordAction } from "@/types/action";
+import { startTransition, useActionState, useState } from "react";
 import { ZodSchema } from "zod";
 
 interface FormErrors<T> {
@@ -6,6 +7,7 @@ interface FormErrors<T> {
 }
 function useForm<T extends Record<string, any>>(
   schema: ZodSchema<T>,
+  action: (data: FormData) => Promise<PasswordAction>,
   initValues: T
 ) {
   const initError = Object.fromEntries(
@@ -13,6 +15,22 @@ function useForm<T extends Record<string, any>>(
   );
   const [formData, setFormData] = useState<T>(initValues);
   const [formError, setFormErrors] = useState<FormErrors<T>>(initError);
+  const [state, formAction, pending] = useActionState(
+    async (_: PasswordAction, payload: FormData | null) => {
+      if (payload === null) {
+        return null;
+      }
+      const data = new FormData();
+      Object.keys(formData).forEach((key) => {
+        data.append(key, formData[key]);
+      });
+      if (!isFormInValid()) {
+        return await action(data);
+      }
+      return { success: false, error: "Invalid Form" };
+    },
+    null
+  );
 
   const validateField = (field: keyof T, value: T) => {
     const result = schema.safeParse(value);
@@ -28,6 +46,11 @@ function useForm<T extends Record<string, any>>(
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const field = e.target.name as keyof T;
+    if (state) {
+      startTransition(() => {
+        formAction(null); // Resets useActionState safely
+      });
+    }
     setFormData({ ...formData, [field]: e.target.value });
     validateField(field, { ...formData, [field]: e.target.value });
   };
@@ -37,7 +60,7 @@ function useForm<T extends Record<string, any>>(
     validateField(field, { ...formData, [field]: e.target.value });
   };
 
-  const isFormValid = () => {
+  const isFormInValid = () => {
     return Object.values(formError).some(
       (err) => !err || (err && err.length > 0)
     );
@@ -48,7 +71,10 @@ function useForm<T extends Record<string, any>>(
     formError,
     handleChange,
     handleBlur,
-    isFormValid,
+    isFormInValid,
+    state,
+    formAction,
+    pending,
   };
 }
 

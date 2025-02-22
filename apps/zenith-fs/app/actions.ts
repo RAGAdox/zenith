@@ -1,22 +1,21 @@
 "use server";
 
+import { PasswordAction } from "@/types/action";
 import { createClient } from "@/utils/supabase/server";
 import { encodedRedirect } from "@/utils/utils";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const signUpAction = async (formData: FormData) => {
+export const signUpAction = async (
+  formData: FormData
+): Promise<PasswordAction> => {
   const email = formData.get("email")?.toString();
   const password = formData.get("password")?.toString();
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
 
   if (!email || !password) {
-    return encodedRedirect(
-      "error",
-      "/sign-up",
-      "Email and password are required"
-    );
+    return { error: "Invalid Form", success: false };
   }
 
   const { error } = await supabase.auth.signUp({
@@ -28,19 +27,15 @@ export const signUpAction = async (formData: FormData) => {
   });
 
   if (error) {
-    console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
+    return { success: false, error: error.message };
   } else {
-    return redirect("/");
-    // return encodedRedirect(
-    //   "success",
-    //   "/sign-up",
-    //   "Thanks for signing up! Please check your email for a verification link."
-    // );
+    return { success: true };
   }
 };
 
-export const signInAction = async (formData: FormData) => {
+export const signInAction = async (
+  formData: FormData
+): Promise<PasswordAction> => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const supabase = await createClient();
@@ -48,13 +43,16 @@ export const signInAction = async (formData: FormData) => {
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
+    options: {},
   });
 
   if (error) {
-    return encodedRedirect("error", "/sign-in", error.message);
+    // return encodedRedirect("error", "/sign-in", error.message);
+    return { success: false, error: error.message };
   }
+  return { success: true };
 
-  return redirect("/protected");
+  // return redirect("/");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
