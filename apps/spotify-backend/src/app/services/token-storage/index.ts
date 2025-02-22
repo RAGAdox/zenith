@@ -1,6 +1,6 @@
 import { getRedisClient } from "@/app/clients";
 import { throwHttpErrors } from "@/app/utils";
-import { IToken } from "@/types";
+import { IToken } from "@zenith/types";
 
 export async function purgeAccessToken() {
   const redisClient = getRedisClient();

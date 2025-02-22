@@ -1,29 +1,22 @@
-import { getClerkClient } from "@/app/clients";
-import verifyQStashAPI from "@/app/services/verify-QStash";
-import { catchHttpErrors, throwHttpErrors } from "@/app/utils";
-import { NextRequest, NextResponse } from "next/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
+import { catchHttpErrors, throwHttpErrors } from "./app/utils";
 
-const QStashAPIs = ["/api/refresh"];
-
-export async function middleware(request: NextRequest) {
-  try {
-    if (QStashAPIs.includes(request.nextUrl.pathname)) {
-      const isValid = await verifyQStashAPI(request);
-      if (isValid) {
-        return NextResponse.next();
+export default clerkMiddleware(
+  async (auth, request) => {
+    try {
+      const { userId } = await auth();
+      if (!userId && request.method !== "OPTIONS") {
+        throwHttpErrors("AUTHENTICATION_ERROR");
       }
+    } catch (error) {
+      return catchHttpErrors(error);
     }
-
-    const client = getClerkClient();
-    const { isSignedIn } = await client.authenticateRequest(request);
-    if (!isSignedIn && request.method !== "OPTIONS") {
-      throwHttpErrors("AUTHENTICATION_ERROR");
-    }
-    NextResponse.next();
-  } catch (error: any) {
-    return catchHttpErrors(error);
+  },
+  {
+    secretKey: process.env.CLERK_SECRET_KEY,
+    publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
   }
-}
+);
 
 export const config = {
   matcher: "/api/((?!callback).*)",

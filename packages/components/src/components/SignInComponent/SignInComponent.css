@@ -1,0 +1,91 @@
+@import "../../index.css";
+
+.sign-in-component {
+  .cl-rootBox {
+    .cl-cardBox {
+      .cl-card {
+        @apply bg-base-100 prose;
+
+        .cl-header {
+          @apply prose;
+
+          p {
+            @apply prose;
+          }
+
+          button {
+            @apply btn btn-ghost btn-circle;
+          }
+        }
+
+        .cl-main {
+          .cl-socialButtonsIconButton {
+            @apply btn;
+          }
+
+          .cl-dividerRow {
+            @apply divider;
+
+            p {
+              @apply prose;
+            }
+
+            .cl-dividerLine {
+              @apply hidden;
+            }
+
+            .cl-dividerLine::before {
+              @apply hidden;
+            }
+          }
+
+          .cl-form {
+            input {
+              @apply input prose;
+            }
+
+            textarea {
+              @apply textarea prose;
+            }
+
+            .cl-formResendCodeLink {
+              @apply btn btn-ghost btn-block px-0;
+            }
+
+            .cl-formFieldRow {
+              .cl-formField {
+                .cl-formFieldLabel {
+                  @apply prose;
+                }
+
+                .cl-formFieldInput {
+                  @apply !input !input-md prose;
+                }
+
+                .cl-button {
+                  @apply btn btn-ghost btn-sm;
+                }
+              }
+            }
+          }
+
+          .cl-formButtonPrimary {
+            @apply btn;
+          }
+
+          .cl-formButtonPrimary::after {
+            @apply hidden;
+          }
+
+          .cl-alternativeMethodsBlockButton {
+            @apply btn;
+          }
+        }
+      }
+
+      .cl-footer {
+        @apply hidden;
+      }
+    }
+  }
+}

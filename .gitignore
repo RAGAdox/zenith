@@ -1,6 +1,13 @@
 .turbo
 .DS_Store
+.vscode
 node_modules
-# Local Netlify folder
-.netlify
+.env
+.env.*
+!.env.example
+
 .vercel
+dist
+build
+
+*storybook.log

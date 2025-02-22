@@ -1,15 +1,78 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalEnv": ["DATABASE_URL"],
+  "globalDependencies": [".env"],
+  "envMode": "strict",
   "tasks": {
     "build": {
-      "outputs": ["build/**", ".next/**"]
+      "dependsOn": ["^build"],
+      "outputs": ["build/**", ".next/**", "dist/**"],
+      "env": [
+        "DATABASE_URL",
+        "VITE_CLERK_PUBLISHABLE_KEY",
+        "VITE_HOST_API",
+        "VITE_HOST_API_PROTOCOL",
+        "UPSTASH_QSTASH_TOKEN",
+        "UPSTASH_REDIS_TOKEN",
+        "UPSTASH_REDIS_URL",
+        "FUNCTION_BASE_URL",
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_CLIENT_SECRET",
+        "CLERK_SECRET_KEY",
+        "CLERK_PUBLISHABLE_KEY",
+        "QSTASH_CURRENT_SIGNING_KEY",
+        "QSTASH_NEXT_SIGNING_KEY"
+      ]
     },
     "start": {
-      "cache": true
+      "dependsOn": ["build"],
+      "cache": true,
+      "env": [
+        "VITE_CLERK_PUBLISHABLE_KEY",
+        "VITE_HOST_API",
+        "VITE_HOST_API_PROTOCOL",
+        "UPSTASH_QSTASH_TOKEN",
+        "UPSTASH_REDIS_TOKEN",
+        "UPSTASH_REDIS_URL",
+        "FUNCTION_BASE_URL",
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_CLIENT_SECRET",
+        "CLERK_SECRET_KEY",
+        "CLERK_PUBLISHABLE_KEY",
+        "QSTASH_CURRENT_SIGNING_KEY",
+        "QSTASH_NEXT_SIGNING_KEY"
+      ]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "VITE_CLERK_PUBLISHABLE_KEY",
+        "VITE_HOST_API",
+        "VITE_HOST_API_PROTOCOL",
+        "UPSTASH_QSTASH_TOKEN",
+        "UPSTASH_REDIS_TOKEN",
+        "UPSTASH_REDIS_URL",
+        "FUNCTION_BASE_URL",
+        "SPOTIFY_CLIENT_ID",
+        "SPOTIFY_CLIENT_SECRET",
+        "CLERK_SECRET_KEY",
+        "CLERK_PUBLISHABLE_KEY",
+        "QSTASH_CURRENT_SIGNING_KEY",
+        "QSTASH_NEXT_SIGNING_KEY"
+      ]
+    },
+    "@zenith/repository#push": {
+      "env": ["DATABASE_URL"],
+      "inputs": ["./.env"]
+    },
+    "@zenith/repository#build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["@zenith/repository#push"]
+    },
+    "@zenith/types#build": {
+      "outputs": ["dist/**"],
+      "dependsOn": ["^@zenith/repository#build"]
     }
   }
 }

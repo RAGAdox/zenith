@@ -1,7 +1,7 @@
 import { getAccessToken } from "@/app/services/spotify-auth";
 import { catchHttpErrors, throwHttpErrors } from "@/app/utils";
 import tokenStorageWorkflow from "@/app/workflow";
-import { IToken } from "@/types";
+import { IToken } from "@zenith/types";
 import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";

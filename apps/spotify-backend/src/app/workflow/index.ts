@@ -8,7 +8,7 @@ import {
   purgeAccessToken,
   storeAccessToken,
 } from "@/app/services/token-storage";
-import { IToken } from "@/types";
+import { IToken } from "@zenith/types";
 
 export default async function tokenStorageWorkflow(token: IToken) {
   const scheduleURL = `${process.env.FUNCTION_BASE_URL}/refresh`;

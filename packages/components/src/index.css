@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@plugin "daisyui" {
+  themes: forest --default;
+  root: ":root";
+  logs: true;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}

@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@plugin "@tailwindcss/typography";
+
+@plugin "tailwindcss-animate";
+
+@plugin "daisyui" {
+  themes: forest --default;
+  root: ":root";
+  logs: true;
+}
+@layer utilities {
+  .validator {
+    & ~ .validator-hint {
+      visibility: hidden;
+      display: none;
+    }
+  }
+
+  .validator {
+    &:user-invalid,
+    &:has(:user-invalid) {
+      & ~ .validator-hint {
+        visibility: visible;
+        display: block;
+        color: var(--color-error);
+      }
+    }
+  }
+}
