@@ -1,3 +1,5 @@
+export const runtime = "edge"; // Edge function
+
 import { signInAction } from "@/app/actions";
 import { SignInFrom } from "@/components/FormComponents";
 import GoogleSSO from "@/components/GoogleSSO";
