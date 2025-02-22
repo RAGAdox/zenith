@@ -2,7 +2,7 @@
 
 import useForm from "@/hooks/useForm";
 import useUrlMessage from "@/hooks/useUrlMessage";
-import { useFormStatus } from "react-dom";
+import { useState } from "react";
 import { z } from "zod";
 
 const SignUpSchema = z
@@ -28,10 +28,13 @@ const SignUpSchema = z
   });
 
 interface SignUpFormProps {
-  signUpAction: (formData: FormData) => void;
+  signUpAction: (formData: FormData) => Promise<void>;
 }
 
 export default function SignUpForm({ signUpAction }: SignUpFormProps) {
+  const [isPending, setPending] = useState<boolean>(false);
+  const serverMessage = useUrlMessage();
+
   const { formData, formError, isFormValid, handleChange, handleBlur } =
     useForm<z.infer<typeof SignUpSchema>>(SignUpSchema, {
       email: "",
@@ -39,20 +42,23 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
       confirmPassword: "",
     });
 
-  const { clearMessage, errorMessage, successMessage } = useUrlMessage();
-
-  const { pending } = useFormStatus(); // Optional: Track form submission state
+  // Optional: Track form submission state
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    serverMessage?.clearMessage();
     handleChange(e);
-    clearMessage();
+  };
+
+  const handleFormSubmit = async () => {
+    setPending(true);
+    const data = new FormData();
+    data.append("email", formData.email);
+    data.append("password", formData.password);
+    signUpAction(data).then(() => setPending(false));
   };
 
   return (
-    <form
-      action={signUpAction}
-      className="flex-1 flex flex-col min-w-64 w-full"
-    >
+    <form className="flex-1 flex flex-col min-w-64 w-full">
       <h1 className="mt-0 mb-0">Sign up</h1>
       <p>
         Already have an account? <a href="/sign-in">Sign in</a>
@@ -123,15 +129,22 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
             ))}
         </div>
 
-        {errorMessage && (
-          <span className="text-xs px-3 text-error">{errorMessage}</span>
+        {serverMessage?.errorMessage && (
+          <span className="px-3 text-error text-xs">
+            {serverMessage.errorMessage}
+          </span>
         )}
         <button
           type="submit"
           className="btn"
-          disabled={pending || isFormValid()}
+          onClick={handleFormSubmit}
+          disabled={
+            isPending ||
+            isFormValid() ||
+            typeof serverMessage.errorMessage === "string"
+          }
         >
-          {pending ? "Signing up..." : "Sign up"}
+          {isPending ? "Signing up..." : "Sign up"}
         </button>
       </div>
     </form>
