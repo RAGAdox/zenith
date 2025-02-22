@@ -1,3 +1,4 @@
+export const runtime = "edge"; // Edge function
 
 export default async function Home() {
   return (

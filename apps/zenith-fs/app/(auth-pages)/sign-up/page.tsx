@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { signUpAction } from "@/app/actions";
 import { SignUpForm } from "@/components/FormComponents";
 import GoogleSSO from "@/components/GoogleSSO";

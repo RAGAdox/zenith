@@ -1,5 +1,6 @@
 "use client";
 
+import Input from "@/components/Input";
 import useForm from "@/hooks/useForm";
 import useTimeout from "@/hooks/useTimeout";
 import { PasswordAction } from "@/types/action";
@@ -74,7 +75,7 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
           <label className="label px-3" htmlFor="email">
             Email
           </label>
-          <input
+          <Input
             className={`input w-full ${formError.email && formError.email.length > 0 ? "input-error" : ""}`}
             name="email"
             type="email"
@@ -96,8 +97,8 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
           <label className="label px-3" htmlFor="password">
             Password
           </label>
-          <input
-            className={`input w-full ${formError.password && formError.password.length > 0 ? "input-error" : ""}`}
+          <Input
+            className={`w-full ${formError.password && formError.password.length > 0 ? "input-error" : ""}`}
             type="password"
             name="password"
             placeholder="Your password"
@@ -117,8 +118,8 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
           <label className="label px-3" htmlFor="confirmPassword">
             Confirm Password
           </label>
-          <input
-            className={`input w-full ${formError.confirmPassword && formError.confirmPassword.length > 0 ? "input-error" : ""}`}
+          <Input
+            className={`w-full ${formError.confirmPassword && formError.confirmPassword.length > 0 ? "input-error" : ""}`}
             type="password"
             name="confirmPassword"
             placeholder="Confirm your password"
