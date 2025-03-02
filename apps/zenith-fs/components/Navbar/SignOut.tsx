@@ -1,5 +1,5 @@
 "use server";
-import { signOutAction } from "@/app/actions";
+import { signOutAction } from "@/actions/authActions";
 import Button from "@/components/Button";
 
 const SignOut = () => {

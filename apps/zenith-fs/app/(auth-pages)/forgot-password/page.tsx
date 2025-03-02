@@ -1,6 +1,6 @@
 export const runtime = "edge"; // Edge function
 
-import { forgotPasswordAction } from "@/app/actions";
+import { forgotPasswordAction } from "@/actions/authActions";
 
 import Button from "@/components/Button";
 import Link from "next/link";

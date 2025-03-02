@@ -1,6 +1,6 @@
 export const runtime = "edge"; // Edge function
 
-import { resetPasswordAction } from "@/app/actions";
+import { resetPasswordAction } from "@/actions/authActions";
 import Button from "@/components/Button";
 
 export default async function ResetPassword(props: {

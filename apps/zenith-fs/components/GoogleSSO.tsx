@@ -1,5 +1,4 @@
-"use server";
-import { signInWithGoogle } from "@/app/actions";
+import { signInWithGoogle } from "@/actions/authActions";
 
 interface GoogleSSOProps {
   classname?: string;

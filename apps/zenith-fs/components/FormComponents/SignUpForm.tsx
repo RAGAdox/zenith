@@ -4,6 +4,7 @@ import Input from "@/components/Input";
 import useForm from "@/hooks/useForm";
 import useTimeout from "@/hooks/useTimeout";
 import { PasswordAction } from "@/types/action";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { z } from "zod";
@@ -67,7 +68,7 @@ export default function SignUpForm({ signUpAction }: SignUpFormProps) {
     <form action={formAction} className="flex-1 flex flex-col min-w-64 w-full">
       <h1 className="mt-0 mb-0">Sign up</h1>
       <p>
-        Already have an account? <a href="/sign-in">Sign in</a>
+        Already have an account? <Link href="/sign-in">Sign in</Link>
       </p>
 
       <div className="flex flex-col gap-4">
