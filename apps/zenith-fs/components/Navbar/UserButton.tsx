@@ -1,12 +1,14 @@
 import Button from "@/components/Button";
-import { User } from "@supabase/supabase-js";
+import { getCurrentUser } from "@/repository/user";
 import Link from "next/link";
 import SignOut from "./SignOut";
 
-interface UserButtonProps {
-  user: User;
-}
-async function UserButton({ user }: UserButtonProps) {
+async function UserButton() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return <></>;
+  }
   const fullName: string = user.user_metadata?.full_name ?? user.email;
 
   const initials = fullName
