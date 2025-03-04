@@ -7,6 +7,20 @@ CREATE TABLE
     "customizations" INTEGER[] NOT NULL
   );
 
+-- DATA RETRIVAL FUNCTION
+
+CREATE OR REPLACE FUNCTION get_cart_data(p_table_id TEXT)
+RETURNS TABLE(id numeric, customizationIds JSONB)
+LANGUAGE SQL
+SECURITY DEFINER
+SET search_path = ''
+AS $$
+SELECT menu_id, jsonb_agg(customizations)
+FROM public.cart
+WHERE table_id = p_table_id
+GROUP BY menu_id;
+$$;
+
 -- ENABLE RLS
 ALTER TABLE "public"."cart" ENABLE ROW LEVEL SECURITY;
 
