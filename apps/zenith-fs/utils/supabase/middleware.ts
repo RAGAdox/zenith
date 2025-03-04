@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
+import { cookieOptions } from "./cookieOptions";
 
 const authPages = [
   "/forgot-password",
@@ -21,11 +22,7 @@ export const updateSession = async (request: NextRequest) => {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
       {
-        cookieOptions: {
-          httpOnly: true,
-          secure: true,
-          sameSite: "lax",
-        },
+        cookieOptions: cookieOptions,
         cookies: {
           getAll() {
             return request.cookies.getAll();

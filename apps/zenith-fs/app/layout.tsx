@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import Revalidator from "@/components/Revalidator";
 import "./globals.css";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -18,6 +19,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Revalidator />
       <body className="bg-base-300 min-h-svh flex flex-col">
         <Navbar />
         <main className="flex flex-1 items-center justify-center">

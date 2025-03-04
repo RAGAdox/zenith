@@ -1,26 +1,38 @@
 "use client";
+
+import { addToCart } from "@/actions/cartActions";
+import { cartDataItem } from "@/repository/cart";
 import { MenuItem } from "@/types/menu";
 import { ChangeEvent, RefObject, useRef, useState } from "react";
 import Button from "./Button";
 
 interface MenuProps {
+  tableId: string;
   item: MenuItem;
+  cartItem?: cartDataItem;
 }
 
 interface ItemCustomizationsProps {
+  tableId: string;
   ref: RefObject<HTMLDialogElement | null>;
   item: MenuItem;
 }
 
-const ItemCustomizations = ({ ref, item }: ItemCustomizationsProps) => {
+const ItemCustomizations = ({
+  ref,
+  item,
+  tableId,
+}: ItemCustomizationsProps) => {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const onChnageHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedIds((ids) => [...ids, parseInt(e.target.id)]);
   };
-  const handleClick = () => {
-    console.log("selectedIds", selectedIds);
+  const handleClick = async () => {
+    await addToCart(tableId, item.id, selectedIds);
+    setSelectedIds([]);
     ref.current?.close();
   };
+
   return (
     <dialog ref={ref} id="item-customization-modal" className="modal">
       <div className="modal-box prose ">
@@ -51,7 +63,7 @@ const ItemCustomizations = ({ ref, item }: ItemCustomizationsProps) => {
   );
 };
 
-const Menu = ({ item }: MenuProps) => {
+const Menu = ({ item, tableId, cartItem }: MenuProps) => {
   const modalRef = useRef<HTMLDialogElement>(null);
   return (
     <>
@@ -66,13 +78,22 @@ const Menu = ({ item }: MenuProps) => {
           <h4 className="mt-0 mb-0">{item.name}</h4>
           <div className="card-actions justify-between items-center">
             <span>{item.price}</span>
-            <Button onClick={() => modalRef.current?.showModal()}>
-              Add to cart
-            </Button>
+            {(cartItem && cartItem.customizationids.length === 0) ||
+            !cartItem ? (
+              <Button onClick={() => modalRef.current?.showModal()}>
+                Add to cart
+              </Button>
+            ) : (
+              <div className="join">
+                <Button>-</Button>
+                <Button>{cartItem.customizationids.length}</Button>
+                <Button onClick={() => modalRef.current?.showModal()}>+</Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <ItemCustomizations ref={modalRef} item={item} />
+      <ItemCustomizations ref={modalRef} item={item} tableId={tableId} />
     </>
   );
 };

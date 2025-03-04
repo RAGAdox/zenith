@@ -27,3 +27,7 @@ WITH
     )
   );
 
+-- ENABLE REALTIME
+ALTER publication supabase_realtime ADD TABLE public."cart";
+
+
