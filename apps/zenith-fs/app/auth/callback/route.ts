@@ -16,6 +16,9 @@ export async function GET(request: Request) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     // TODO: ADD LOGIC TO HANDLE FAILURE
+    if (error) {
+      console.error(error);
+    }
   }
 
   if (redirectTo) {

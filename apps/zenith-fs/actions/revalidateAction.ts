@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
-const revalidatePathAction = (path?: string) => {
-  revalidatePath(path ?? "/");
+const revalidatePathAction = (paths?: string[]) => {
+  paths?.forEach((path) => revalidatePath(path));
 };
 
 export { revalidatePathAction };

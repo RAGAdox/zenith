@@ -20,9 +20,9 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Revalidator />
-      <body className="bg-base-300 min-h-svh flex flex-col">
+      <body className="bg-base-300 h-svh flex flex-col overflow-hidden">
         <Navbar />
-        <main className="flex flex-1 items-center justify-center">
+        <main className="overflow-y-scroll max-h-[calc(100%-4rem)]">
           {children}
         </main>
       </body>

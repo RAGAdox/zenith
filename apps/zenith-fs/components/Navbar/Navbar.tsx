@@ -22,6 +22,9 @@ const Navbar = async () => {
         </Button>
       </div>
       <div className="flex flex-none gap-2">
+        <Button variant="nav-link" asChild>
+          <Link href="/menu">Menu</Link>
+        </Button>
         <CartButton />
         <UserButton />
       </div>

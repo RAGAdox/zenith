@@ -16,7 +16,7 @@ const Revalidator = () => {
         "postgres_changes",
         { event: "*", schema: "public", table: "cart" },
         () => {
-          revalidatePathAction("/menu");
+          revalidatePathAction(["/menu", "/cart"]);
         }
       )
       .subscribe();

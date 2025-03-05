@@ -19,6 +19,19 @@ const getCartData = async (): Promise<cartDataItem[] | null> => {
   return data;
 };
 
+const getRawCartData = async (tableId: string) => {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("get_cart_items", {
+    p_table_id: tableId,
+  });
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data;
+};
+
 const getCartCount = async (tableId: string): Promise<number | null> => {
   const supabase = await createClient();
   const { count } = await supabase
@@ -29,4 +42,4 @@ const getCartCount = async (tableId: string): Promise<number | null> => {
   return count;
 };
 
-export { getCartCount, getCartData };
+export { getCartCount, getCartData, getRawCartData };
