@@ -22,7 +22,7 @@ export default async function RootLayout({
       <Revalidator />
       <body className="bg-base-300 h-svh flex flex-col overflow-hidden">
         <Navbar />
-        <main className="overflow-y-scroll max-h-[calc(100%-4rem)]">
+        <main className="overflow-y-scroll max-h-[calc(100%-4rem)] flex flex-col flex-1">
           {children}
         </main>
       </body>

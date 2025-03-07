@@ -9,14 +9,24 @@ const TableReservationForm = () => {
   const [tableId, setTableId] = useState<string>("");
 
   return (
-    <div>
-      <h1 className="mt-0 mb-0">Reserve a table</h1>
-      <Input
-        className=""
-        value={tableId}
-        onChange={(e) => setTableId(e.target.value)}
-      />
-      <Button onClick={() => postTableReservationData(tableId)}>Submit</Button>
+    <div className="card bg-base-100">
+      <div className="card-body prose px-4 py-2">
+        <h4 className="mt-0 mb-0">Reserve a table</h4>
+        <Input
+          className=""
+          value={tableId}
+          onChange={(e) => setTableId(e.target.value)}
+        />
+        <div className="card-actions justify-end ">
+          <Button
+            variant="cta"
+            className=""
+            onClick={() => postTableReservationData(tableId)}
+          >
+            Submit
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

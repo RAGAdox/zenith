@@ -8,7 +8,7 @@ const ReserveTable = async () => {
     redirect("/menu", RedirectType.replace);
   }
   return (
-    <div>
+    <div className="flex-1 flex flex-col justify-center items-center">
       <TableReservationForm />
     </div>
   );
